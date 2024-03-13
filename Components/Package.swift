@@ -28,6 +28,7 @@ let package = Package(
         .target(
             name: "ClassDumperCore",
             dependencies: [
+                "SimulatorManager",
                 .product(name: "ClassDump", package: "ClassDump"),
                 .product(name: "ExceptionCatcher", package: "ExceptionCatcher"),
                 .product(name: "FrameworkToolbox", package: "FrameworkToolbox"),
@@ -52,6 +53,19 @@ let package = Package(
         ),
         .target(
             name: "ApplicationLaunchers"
+        ),
+        .target(
+            name: "SimulatorManager",
+            dependencies: [
+                .product(name: "FrameworkToolbox", package: "FrameworkToolbox"),
+                .product(name: "FoundationToolbox", package: "FrameworkToolbox"),
+            ]
+        ),
+        .testTarget(
+            name: "SimulatorManagerTests",
+            dependencies: [
+                "SimulatorManager"
+            ]
         )
     ]
 )

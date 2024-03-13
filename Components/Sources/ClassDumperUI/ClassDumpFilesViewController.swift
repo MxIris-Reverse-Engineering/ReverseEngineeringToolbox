@@ -13,31 +13,9 @@ import FrameworkToolbox
 import FoundationToolbox
 import UniformTypeIdentifiers
 import ClassDumperCore
-import ApplicationLaunchers
 
 public class ClassDumpFilesViewController: XibViewController {
     public override class var nibBundle: Bundle { .module }
-
-    enum Column: String, CaseIterable {
-        case name = "Name"
-        case type = "Type"
-        case operation = "Operation"
-        case progress = "Progress"
-        var identifier: NSUserInterfaceItemIdentifier { .init(rawValue: rawValue) }
-
-        var width: (width: CGFloat, minWidth: CGFloat, maxWidth: CGFloat) {
-            switch self {
-            case .name:
-                (200, 200, 200)
-            case .type:
-                (30, 30, 30)
-            case .operation:
-                (1000, 100, 1000)
-            case .progress:
-                (30, 30, 30)
-            }
-        }
-    }
 
     @IBOutlet var selectSourceButton: NSButton!
     @IBOutlet var performButton: NSButton!
@@ -46,24 +24,14 @@ public class ClassDumpFilesViewController: XibViewController {
     @IBOutlet var autoSelectDestinationCheckbox: NSButton!
     @IBOutlet var sourcePathTextField: NSTextField!
     @IBOutlet var totalProgressIndicator: NSProgressIndicator!
-    @IBOutlet var tableView: NSTableView!
-
+    @IBOutlet var tableView: ClassDumpFilesTableView!
     let classDumpController = ClassDumpFilesController()
+    lazy var tableViewAdapter = ClassDumpFilesTableViewAdapter(tableView: tableView, classDumpController: classDumpController)
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.tableColumns.forEach(tableView.removeTableColumn(_:))
-        Column.allCases.forEach { column in
-            let tableColumn = NSTableColumn(identifier: column.identifier)
-            tableColumn.width = column.width.width
-            tableColumn.minWidth = column.width.minWidth
-            tableColumn.maxWidth = column.width.maxWidth
-            tableColumn.resizingMask = .autoresizingMask
-            tableView.addTableColumn(tableColumn)
-        }
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.columnAutoresizingStyle = .uniformColumnAutoresizingStyle
+        tableView.dataSource = tableViewAdapter
+        tableView.delegate = tableViewAdapter
         classDumpController.delegate = self
     }
 
@@ -104,66 +72,23 @@ public class ClassDumpFilesViewController: XibViewController {
     }
 }
 
-extension ClassDumpFilesViewController: NSTableViewDataSource, NSTableViewDelegate {
-    public func numberOfRows(in tableView: NSTableView) -> Int {
-        classDumpController.parsedDumpableFiles.count
-    }
-
-    public func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        guard let tableColumn, let column = Column(rawValue: tableColumn.identifier.rawValue) else { return nil }
-        let dumpableFile = classDumpController.parsedDumpableFiles[row]
-        switch column {
-        case .name:
-            let cellView = tableView.box.makeView(ofClass: ClassDumpNameCellView.self, owner: nil)
-            cellView.configure(for: dumpableFile)
-            return cellView
-        case .type:
-            let cellView = tableView.box.makeView(ofClass: ClassDumpTypeCellView.self, owner: nil)
-            cellView.textField?.stringValue = dumpableFile.executableURL.path
-            return cellView
-        case .operation:
-            let cellView = tableView.box.makeView(ofClass: ClassDumpOperationCellView.self, owner: nil)
-            cellView.showInFinderOperationButton.box.setAction { [weak dumpableFile] _ in
-                guard let dumpableFile else { return }
-                FinderLauncher(url: dumpableFile.url).run()
-            }
-            cellView.openInHopperDisassemblerOperationButton.box.setAction { [weak dumpableFile] _ in
-                guard let dumpableFile else { return }
-                HopperDisassemblerLauncher(executableURL: dumpableFile.executableURL).run { result in
-                    switch result {
-                    case .success:
-                        break
-                    case let .failure(error):
-                        NSAlert(error: error).runModal()
-                    }
-                }
-            }
-            return cellView
-        case .progress:
-            let cellView = tableView.box.makeView(ofClass: ClassDumpProgressCellView.self, owner: nil)
-            cellView.state = dumpableFile.state
-            return cellView
-        }
-    }
-}
-
 extension ClassDumpFilesViewController: ClassDumpFilesControllerDelegate {
     public func classDumpFilesController(_ controller: ClassDumpFilesController, didSelectSourceURL url: URL) {
         sourcePathTextField.stringValue = url.path
         showInFinderButton.isEnabled = true
         performButton.isEnabled = true
         isDirectoryCheckbox.state = (classDumpController.currentSourceFileWrapper?.isDirectory ?? false) ? .on : .off
-        tableView.reloadData()
+        tableViewAdapter.reloadData()
     }
 
     public func classDumpFilesController(_ controller: ClassDumpFilesController, willStartDumpableFile dumpableFile: ClassDumpableFile, atIndex index: Int) {
-        tableView.reloadData(forRowIndexes: [index], columnIndexes: [tableView.column(withIdentifier: Column.progress.identifier)])
+        tableViewAdapter.reloadData(forRow: index, column: .progress)
     }
 
     public func classDumpFilesController(_ controller: ClassDumpFilesController, didCompleteDumpableFile dumpableFile: ClassDumpableFile, atIndex index: Int) {
         let progressValue = classDumpController.completedDumpableFiles.count.double / classDumpController.parsedDumpableFiles.count.double
         totalProgressIndicator.doubleValue = progressValue
-        tableView.reloadData(forRowIndexes: [index], columnIndexes: [tableView.column(withIdentifier: Column.progress.identifier)])
+        tableViewAdapter.reloadData(forRow: index, column: .progress)
     }
 
     public func classDumpFilesControllerWillStartPerform(_ controller: ClassDumpFilesController) {
