@@ -10,6 +10,7 @@ import SnapKit
 import UIFoundation
 import UIFoundationToolbox
 import ClassDumperCore
+import IDEIcons
 
 class ClassDumpNameCellView: ImageTextTableCellView {
     func configure(for file: ClassDumpableFile) {
@@ -17,7 +18,7 @@ class ClassDumpNameCellView: ImageTextTableCellView {
         switch file.type {
         case .framework:
             imageView?.image = Bundle.module.image(forResource: "FrameworkIcon").map { $0.box.toSize(.init(width: 18, height: 18)) }
-        case .executable:
+        case .executable, .dylib:
             imageView?.image = Bundle.module.image(forResource: "ExecutableBinaryIcon").map { $0.box.toSize(.init(width: 18, height: 18)) }
         }
     }
@@ -43,9 +44,13 @@ class ClassDumpOperationCellView: TableCellView {
 
     let openInHopperDisassemblerOperationButton: NSButton = .init()
 
+    let dumpOperationButton: NSButton = .init()
+    
     lazy var contentStackView = HStackView(spacing: 10) {
         showInFinderOperationButton
         openInHopperDisassemblerOperationButton
+        dumpOperationButton
+            .size(width: 20, height: 20)
     }
 
     override func setup() {
@@ -54,7 +59,9 @@ class ClassDumpOperationCellView: TableCellView {
         showInFinderOperationButton.isBordered = false
         openInHopperDisassemblerOperationButton.image = Bundle.module.image(forResource: "HopperDisassemblerAppIcon").map { $0.box.toSize(.init(width: 20, height: 20)) }
         openInHopperDisassemblerOperationButton.isBordered = false
-
+        dumpOperationButton.image = IDEIcon("C", size: 18).image
+        dumpOperationButton.isBordered = false
+        
         addSubview(contentStackView)
         contentStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()

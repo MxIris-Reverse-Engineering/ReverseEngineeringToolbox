@@ -11,13 +11,15 @@ public final class ClassDumpViewController: XiblessViewController<NSView> {
 
     public private(set) lazy var dyldViewController = ClassDumpDyldViewController()
     
+    public private(set) lazy var simulatorViewController = ClassDumpSimulatorViewController()
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
 
         view.addSubview(tabView)
 
         tabView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide).inset(10)
+            make.edges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
 
         tabView.tabViewType = .topTabsBezelBorder
@@ -27,6 +29,9 @@ public final class ClassDumpViewController: XiblessViewController<NSView> {
         let dyldItem = NSTabViewItem(viewController: dyldViewController)
         dyldItem.label = "Dyld"
         tabView.addTabViewItem(dyldItem)
+        let simulatorItem = NSTabViewItem(viewController: simulatorViewController)
+        simulatorItem.label = "Simulator"
+        tabView.addTabViewItem(simulatorItem)
     }
 }
 

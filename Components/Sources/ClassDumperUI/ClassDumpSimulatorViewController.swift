@@ -7,11 +7,190 @@
 
 import AppKit
 import UIFoundation
+import ClassDumperCore
+import SimulatorManager
+import AdvancedCollectionTableView
+import FZUIKit
+import ApplicationLaunchers
 
-class ClassDumpSimulatorViewController: XibViewController {
+class ClassDumpSimulatorRuntimeTableView: NSTableView {}
+class ClassDumpSimulatorPathTableView: NSTableView {}
+
+enum ClassDumpSimulatorRuntimeSection: Identifiable, CaseIterable {
+    case main
+    var id: Self { self }
+}
+
+enum ClassDumpSimulatorPathSection: Identifiable, CaseIterable {
+    case main
+    var id: Self { self }
+}
+
+class ClassDumpSimulatorView: NSView {}
+
+public class ClassDumpSimulatorViewController: XibViewController {
     public override class var nibBundle: Bundle { .module }
-    override func viewDidLoad() {
+
+    @IBOutlet var runtimesTableView: ClassDumpSimulatorRuntimeTableView!
+
+    @IBOutlet var pathsTableView: ClassDumpSimulatorPathTableView!
+
+    @IBOutlet var filesTableView: ClassDumpFilesTableView!
+
+    private let classDumpSimulatorController = ClassDumpSimulatorController()
+
+    private lazy var runtimesTableViewDataSource: TableViewDiffableDataSource<ClassDumpSimulatorRuntimeSection, SimulatorRumtime> = {
+        let cellRegistration = NSTableView.CellRegistration<NSTableCellView, SimulatorRumtime> { cellView, tableColumn, row, item in
+            var contentConfiguration = NSListContentConfiguration.plain()
+            contentConfiguration.text = item.readableString
+            cellView.contentConfiguration = contentConfiguration
+        }
+
+        return .init(tableView: runtimesTableView, cellRegistration: cellRegistration)
+    }()
+
+    private lazy var pathsTableViewDataSource: TableViewDiffableDataSource<ClassDumpSimulatorPathSection, String> = {
+        let cellRegistration = NSTableView.CellRegistration<NSTableCellView, String> { cellView, tableColumn, row, item in
+            var contentConfiguration = NSListContentConfiguration.plain()
+            contentConfiguration.text = item
+            cellView.contentConfiguration = contentConfiguration
+        }
+
+        return .init(tableView: pathsTableView, cellRegistration: cellRegistration)
+    }()
+
+    private lazy var filesTableViewAdapter = ClassDumpFilesTableViewAdapter(tableView: filesTableView, classDumpController: classDumpSimulatorController.classDumpFilesController)
+
+    public override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
+
+        runtimesTableView.do {
+            $0.dataSource = runtimesTableViewDataSource
+            $0.doubleAction = #selector(runtimesTableViewDoubleAction(_:))
+        }
+        
+        pathsTableView.do {
+            $0.dataSource = pathsTableViewDataSource
+            $0.doubleAction = #selector(pathsTableViewDoubleAction(_:))
+        }
+        
+        classDumpSimulatorController.do {
+            $0.delegate = self
+            $0.classDumpFilesController.delegate = self
+        }
+        
+        filesTableViewAdapter.do {
+            $0.setupDataSource()
+        }
+        
+        filesTableView.do {
+            $0.sizeToFit()
+        }
+        
+        runtimesTableViewDataSource.do {
+            $0.menuProvider = { runtimes in
+                guard let runtime = runtimes.first else { return nil }
+                return NSMenu {
+                    MenuItem("Show in Finder")
+                        .onSelect {
+                            FinderLauncher(url: runtime.path.filePathURL).run()
+                        }
+                }
+            }
+            $0.emptyContentConfiguration = NSContentUnavailableConfiguration.emptyContentConfiguration("No Available Runtimes")
+        }
+        pathsTableViewDataSource.do {
+            $0.menuProvider = { [weak self] paths in
+                guard let self, let selectedRuntime = self.classDumpSimulatorController.selectedRuntime, let path = paths.first else { return nil }
+                return NSMenu {
+                    MenuItem("Show in Finder")
+                        .onSelect {
+                            let url = selectedRuntime.runtimeRootPath.filePathURL.appendingPathComponent(path)
+                            FinderLauncher(url: url).run()
+                        }
+                }
+            }
+            $0.emptyContentConfiguration = NSContentUnavailableConfiguration.emptyContentConfiguration("No Available Paths")
+        }
+        
+       
+    }
+
+    @IBAction func searchRuntimesButtonAction(_ sender: NSButton) {
+        classDumpSimulatorController.searchRuntimes()
+    }
+
+    @objc func runtimesTableViewDoubleAction(_ sender: NSTableView) {
+        guard let runtime = runtimesTableViewDataSource.item(forRow: sender.clickedRow) else { return }
+        classDumpSimulatorController.selectRuntime(runtime)
+    }
+
+    @objc func pathsTableViewDoubleAction(_ sender: NSTableView) {
+        guard let path = pathsTableViewDataSource.item(forRow: sender.clickedRow) else { return }
+        classDumpSimulatorController.selectPath(path)
     }
 }
+
+extension NSContentUnavailableConfiguration {
+    static func emptyContentConfiguration(_ text: String) -> Self {
+        var emptyContentConfiguration = NSContentUnavailableConfiguration.empty()
+        emptyContentConfiguration.text = text
+        emptyContentConfiguration.textProperties.font = .title
+        emptyContentConfiguration.textProperties.color = .tertiaryLabelColor
+        emptyContentConfiguration.directionalLayoutMargins = .zero
+        return emptyContentConfiguration
+    }
+}
+
+extension ClassDumpSimulatorViewController: ClassDumpFilesControllerDelegate {
+    public func classDumpFilesController(_ controller: ClassDumpFilesController, willParseSourceURL url: URL) {
+        filesTableViewAdapter.beginUpdate()
+    }
+
+    public func classDumpFilesController(_ controller: ClassDumperCore.ClassDumpFilesController, didSelectSourceURL url: URL) {
+        filesTableViewAdapter.endUpdate()
+        filesTableViewAdapter.reloadData()
+    }
+
+    public func classDumpFilesController(_ controller: ClassDumperCore.ClassDumpFilesController, willStartDumpableFile dumpableFile: ClassDumperCore.ClassDumpableFile) {}
+
+    public func classDumpFilesController(_ controller: ClassDumperCore.ClassDumpFilesController, didCompleteDumpableFile dumpableFile: ClassDumperCore.ClassDumpableFile) {}
+
+    public func classDumpFilesControllerWillStartPerform(_ controller: ClassDumperCore.ClassDumpFilesController) {}
+
+    public func classDumpFilesControllerDidCompletePerform(_ controller: ClassDumperCore.ClassDumpFilesController) {}
+}
+
+extension ClassDumpSimulatorViewController: ClassDumpSimulatorControllerDelegate {
+    public func classDumpSimulatorController(_ controller: ClassDumperCore.ClassDumpSimulatorController, didSearchRuntimes runtimes: [SimulatorRumtime]) {
+        var snapshot = runtimesTableViewDataSource.emptySnapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(runtimes.sorted(by: \.readableString, .ascending), toSection: .main)
+        runtimesTableViewDataSource.apply(snapshot, .withoutAnimation)
+    }
+
+    public func classDumpSimulatorController(_ controller: ClassDumpSimulatorController, didSelectRuntime runtime: SimulatorRumtime) {
+        var snapshot = pathsTableViewDataSource.emptySnapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(runtime.availablePaths, toSection: .main)
+        pathsTableViewDataSource.apply(snapshot, .withoutAnimation)
+    }
+
+    public func classDumpSimulatorControllerDidSelectSource(_ controller: ClassDumpSimulatorController) {
+//        filesTableView.reloadData()
+    }
+
+    public func classDumpSimulatorController(_ controller: ClassDumpSimulatorController, didFailureSelectSourceWithError error: any Error) {
+        DispatchQueue.main.async {
+            NSAlert(error: error).runModal()
+        }
+    }
+}
+
+extension String: Identifiable {
+    public var id: Self { self }
+}
+
+extension ClassDumpSimulatorController: Then {}
+extension ClassDumpFilesController: Then {}
+extension ClassDumpFilesTableViewAdapter: Then {}

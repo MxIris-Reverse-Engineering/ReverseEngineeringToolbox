@@ -3,11 +3,13 @@ import ClassDump
 import ExceptionCatcher
 import FrameworkToolbox
 import FoundationToolbox
+import UniformTypeIdentifiers
 
 public protocol ClassDumpFilesControllerDelegate: AnyObject {
+    func classDumpFilesController(_ controller: ClassDumpFilesController, willParseSourceURL url: URL)
     func classDumpFilesController(_ controller: ClassDumpFilesController, didSelectSourceURL url: URL)
-    func classDumpFilesController(_ controller: ClassDumpFilesController, willStartDumpableFile dumpableFile: ClassDumpableFile, atIndex index: Int)
-    func classDumpFilesController(_ controller: ClassDumpFilesController, didCompleteDumpableFile dumpableFile: ClassDumpableFile, atIndex index: Int)
+    func classDumpFilesController(_ controller: ClassDumpFilesController, willStartDumpableFile dumpableFile: ClassDumpableFile)
+    func classDumpFilesController(_ controller: ClassDumpFilesController, didCompleteDumpableFile dumpableFile: ClassDumpableFile)
     func classDumpFilesControllerWillStartPerform(_ controller: ClassDumpFilesController)
     func classDumpFilesControllerDidCompletePerform(_ controller: ClassDumpFilesController)
 }
@@ -48,6 +50,7 @@ public final class ClassDumpFilesController {
         let currentSourceFileWrapper = try FileWrapper(url: url)
         self.currentSourceFileWrapper = currentSourceFileWrapper
         if currentSourceFileWrapper.isDirectory, url.lastPathComponent.pathExtension != "framework" {
+            delegate?.classDumpFilesController(self, willParseSourceURL: url)
             serialQueue.async {
                 for childrenURL in url.box.enumerator(options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants, .skipsPackageDescendants]) {
                     self.parseURLContent(childrenURL)
@@ -59,6 +62,7 @@ public final class ClassDumpFilesController {
                 }
             }
         } else {
+            delegate?.classDumpFilesController(self, willParseSourceURL: url)
             parseURLContent(url)
             delegate?.classDumpFilesController(self, didSelectSourceURL: url)
         }
@@ -75,16 +79,28 @@ public final class ClassDumpFilesController {
                             if let contentType = try? symbolicLinkDestinationFullURL.resourceValues(forKeys: [.contentTypeKey]).contentType {
                                 if contentType == .unixExecutable {
                                     parsedDumpableFiles.append(.init(url: url, executableURL: symbolicLinkDestinationFullURL, type: .framework))
+                                    continue
                                 }
                             }
                         }
                     }
+                    if let contentType = try? childrenURL.resourceValues(forKeys: [.contentTypeKey]).contentType, contentType == .unixExecutable {
+                        parsedDumpableFiles.append(.init(url: url, executableURL: childrenURL, type: .framework))
+                    }
                 }
             case .unixExecutable:
                 parsedDumpableFiles.append(.init(url: url, executableURL: url, type: .executable))
+            case .dylib:
+                parsedDumpableFiles.append(.init(url: url, executableURL: url, type: .dylib))
             default:
                 break
             }
+        }
+    }
+
+    public func perform(for dumpableFile: ClassDumpableFile, to destinationRootURL: URL) {
+        serialQueue.async {
+            self._perform(for: dumpableFile, to: destinationRootURL)
         }
     }
 
@@ -94,35 +110,40 @@ public final class ClassDumpFilesController {
         delegate?.classDumpFilesControllerWillStartPerform(self)
         for (index, parsedDumpableFile) in parsedDumpableFiles.enumerated() {
             concurrentQueue.async(group: group) {
-                let sourcePath = parsedDumpableFile.executableURL.path
-                let destinationPath = currentDestinationURL.appendingPathComponent(sourcePath.lastPathComponent.deletingPathExtension).path
-                if !self.fileManager.fileExists(atPath: destinationPath) {
-                    try? self.fileManager.createDirectory(atPath: destinationPath, withIntermediateDirectories: true)
-                }
-                do {
-                    DispatchQueue.main.sync {
-                        parsedDumpableFile.state = .loading
-                        self.delegate?.classDumpFilesController(self, willStartDumpableFile: parsedDumpableFile, atIndex: index)
-                    }
-                    try ExceptionCatcher.catch { try ClassDumpManager.shared.performClassDump(onFile: sourcePath, toFolder: destinationPath) }
-                    DispatchQueue.main.sync {
-                        parsedDumpableFile.state = .success
-                        self.completedDumpableFiles.append(parsedDumpableFile)
-                        self.delegate?.classDumpFilesController(self, didCompleteDumpableFile: parsedDumpableFile, atIndex: index)
-                    }
-                } catch {
-                    print(error.localizedDescription)
-                    debugPrint(error)
-                    DispatchQueue.main.sync {
-                        parsedDumpableFile.state = .failure
-                        self.completedDumpableFiles.append(parsedDumpableFile)
-                        self.delegate?.classDumpFilesController(self, didCompleteDumpableFile: parsedDumpableFile, atIndex: index)
-                    }
-                }
+                self._perform(for: parsedDumpableFile, to: currentDestinationURL)
             }
         }
         group.notify(queue: .main) {
             self.delegate?.classDumpFilesControllerDidCompletePerform(self)
+        }
+    }
+
+    private func _perform(for dumpableFile: ClassDumpableFile, to destinationRootURL: URL) {
+        assert(!Thread.isMainThread, "This function cannot be called from the main thread")
+        let sourcePath = dumpableFile.executableURL.path
+        let destinationPath = destinationRootURL.appendingPathComponent(sourcePath.lastPathComponent.deletingPathExtension).path
+        if !fileManager.fileExists(atPath: destinationPath) {
+            try? fileManager.createDirectory(atPath: destinationPath, withIntermediateDirectories: true)
+        }
+        do {
+            DispatchQueue.main.sync {
+                dumpableFile.state = .loading
+                self.delegate?.classDumpFilesController(self, willStartDumpableFile: dumpableFile)
+            }
+            try ExceptionCatcher.catch { try ClassDumpManager.shared.performClassDump(onFile: sourcePath, toFolder: destinationPath) }
+            DispatchQueue.main.sync {
+                dumpableFile.state = .success
+                self.completedDumpableFiles.append(dumpableFile)
+                self.delegate?.classDumpFilesController(self, didCompleteDumpableFile: dumpableFile)
+            }
+        } catch {
+            print(error.localizedDescription)
+            debugPrint(error)
+            DispatchQueue.main.sync {
+                dumpableFile.state = .failure
+                self.completedDumpableFiles.append(dumpableFile)
+                self.delegate?.classDumpFilesController(self, didCompleteDumpableFile: dumpableFile)
+            }
         }
     }
 }
@@ -131,4 +152,13 @@ extension Array {
     mutating func sort<Value: Comparable>(for keyPath: KeyPath<Element, Value>, by areInIncreasingOrder: (Value, Value) throws -> Bool) rethrows {
         try sort(by: { try areInIncreasingOrder($0[keyPath: keyPath], $1[keyPath: keyPath]) })
     }
+}
+
+func print(_ item: Any?) -> Bool {
+    print(item as Any)
+    return true
+}
+
+extension UTType {
+    static let dylib = UTType("com.apple.mach-o-dylib")!
 }

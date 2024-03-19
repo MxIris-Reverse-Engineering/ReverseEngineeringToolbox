@@ -30,8 +30,9 @@ public class ClassDumpFilesViewController: XibViewController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.dataSource = tableViewAdapter
-        tableView.delegate = tableViewAdapter
+//        tableView.dataSource = tableViewAdapter
+//        tableView.delegate = tableViewAdapter
+        tableViewAdapter.setupDataSource()
         classDumpController.delegate = self
     }
 
@@ -73,22 +74,28 @@ public class ClassDumpFilesViewController: XibViewController {
 }
 
 extension ClassDumpFilesViewController: ClassDumpFilesControllerDelegate {
+    public func classDumpFilesController(_ controller: ClassDumpFilesController, willParseSourceURL url: URL) {
+        
+    }
     public func classDumpFilesController(_ controller: ClassDumpFilesController, didSelectSourceURL url: URL) {
         sourcePathTextField.stringValue = url.path
         showInFinderButton.isEnabled = true
         performButton.isEnabled = true
         isDirectoryCheckbox.state = (classDumpController.currentSourceFileWrapper?.isDirectory ?? false) ? .on : .off
         tableViewAdapter.reloadData()
+        
     }
 
-    public func classDumpFilesController(_ controller: ClassDumpFilesController, willStartDumpableFile dumpableFile: ClassDumpableFile, atIndex index: Int) {
-        tableViewAdapter.reloadData(forRow: index, column: .progress)
+    public func classDumpFilesController(_ controller: ClassDumpFilesController, willStartDumpableFile dumpableFile: ClassDumpableFile) {
+//        tableViewAdapter.reloadData(forRow: index, column: .progress)
+        tableViewAdapter.reloadItem(dumpableFile)
     }
 
-    public func classDumpFilesController(_ controller: ClassDumpFilesController, didCompleteDumpableFile dumpableFile: ClassDumpableFile, atIndex index: Int) {
+    public func classDumpFilesController(_ controller: ClassDumpFilesController, didCompleteDumpableFile dumpableFile: ClassDumpableFile) {
         let progressValue = classDumpController.completedDumpableFiles.count.double / classDumpController.parsedDumpableFiles.count.double
         totalProgressIndicator.doubleValue = progressValue
-        tableViewAdapter.reloadData(forRow: index, column: .progress)
+//        tableViewAdapter.reloadData(forRow: index, column: .progress)
+        tableViewAdapter.reloadItem(dumpableFile)
     }
 
     public func classDumpFilesControllerWillStartPerform(_ controller: ClassDumpFilesController) {

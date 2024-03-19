@@ -1,11 +1,11 @@
 import Foundation
 
-public struct SimulatorImage: Codable {
-    public struct Path: Codable {
+public struct SimulatorImage: Codable, Hashable {
+    public struct Path: Codable, Hashable {
         public let relative: String
     }
 
-    public struct RuntimeInfo: Codable {
+    public struct RuntimeInfo: Codable, Hashable {
         public let build: String
         public let bundleIdentifier: String
         public let bundlePath: Path
@@ -27,6 +27,6 @@ public struct SimulatorImage: Codable {
     public let userInfoData: Data?
 }
 
-public struct SimulatorImageList: Codable {
+public struct SimulatorImageList: Codable, Hashable {
     public let images: [SimulatorImage]
 }

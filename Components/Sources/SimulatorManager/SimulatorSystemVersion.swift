@@ -1,5 +1,5 @@
 import Foundation
-public struct SimulatorSystemVersion: Codable {
+public struct SimulatorSystemVersion: Codable, Hashable {
     public let buildID: String
     public let productBuildVersion: String
     public let productCopyright: String

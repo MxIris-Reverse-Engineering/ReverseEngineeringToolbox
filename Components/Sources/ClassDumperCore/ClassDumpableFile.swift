@@ -10,9 +10,11 @@ public enum ClassDumpingState {
 public enum ClassDumpableFileType {
     case framework
     case executable
+    case dylib
 }
 
-public class ClassDumpableFile {
+public class ClassDumpableFile: Hashable, Identifiable {
+    
     public let url: URL
 
     public let executableURL: URL
@@ -34,4 +36,14 @@ public class ClassDumpableFile {
         self.executableURL = executableURL
         self.type = type
     }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(url)
+    }
+
+    public static func == (lhs: ClassDumpableFile, rhs: ClassDumpableFile) -> Bool {
+        lhs.url == rhs.url
+    }
+
+    public var id: ClassDumpableFile { self }
 }

@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "Components",
-    platforms: [.macOS(.v11)],
+    platforms: [.macOS(.v12)],
     products: [
         .library(
             name: "ClassDumperCore",
@@ -22,7 +22,12 @@ let package = Package(
         .package(url: "https://github.com/Mx-Iris/UIFoundation", branch: "main"),
         .package(url: "https://github.com/Mx-Iris/FrameworkToolbox", branch: "main"),
         .package(url: "https://github.com/MxIris-Reverse-Engineering-Forks/ClassDump", branch: "main"),
+        .package(url: "https://github.com/MxIris-Reverse-Engineering-Forks/ClassDumpDyld", branch: "main"),
         .package(url: "https://github.com/Mx-Iris/SFSymbol", branch: "main"),
+        .package(url: "https://github.com/MxIris-macOS-Library-Forks/AdvancedCollectionTableView", branch: "Fix"),
+//        .package(path: "/Volumes/Repositories/Private/Fork/Library/AdvancedCollectionTableView"),
+        .package(url: "https://github.com/freysie/ide-icons", branch: "main"),
+        .package(url: "https://github.com/j-f1/MenuBuilder", branch: "main"),
     ],
     targets: [
         .target(
@@ -30,6 +35,7 @@ let package = Package(
             dependencies: [
                 "SimulatorManager",
                 .product(name: "ClassDump", package: "ClassDump"),
+                .product(name: "ClassDumpDyld", package: "ClassDumpDyld"),
                 .product(name: "ExceptionCatcher", package: "ExceptionCatcher"),
                 .product(name: "FrameworkToolbox", package: "FrameworkToolbox"),
                 .product(name: "FoundationToolbox", package: "FrameworkToolbox"),
@@ -45,7 +51,10 @@ let package = Package(
                 .product(name: "UIFoundation", package: "UIFoundation"),
                 .product(name: "UIFoundationToolbox", package: "UIFoundation"),
                 .product(name: "SnapKit", package: "SnapKit"),
-                .product(name: "SFSymbol", package: "SFSymbol")
+                .product(name: "SFSymbol", package: "SFSymbol"),
+                .product(name: "AdvancedCollectionTableView", package: "AdvancedCollectionTableView"),
+                .product(name: "IDEIcons", package: "ide-icons"),
+                .product(name: "MenuBuilder", package: "MenuBuilder"),
             ],
             resources: [
                 .process("Resources")

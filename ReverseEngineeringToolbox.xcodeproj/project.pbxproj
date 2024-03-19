@@ -19,6 +19,9 @@
 		E984AB582B98B20C002B59F5 /* UIFoundationToolbox in Frameworks */ = {isa = PBXBuildFile; productRef = E984AB572B98B20C002B59F5 /* UIFoundationToolbox */; };
 		E984AB5A2B98B247002B59F5 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E984AB592B98B247002B59F5 /* MainWindowController.swift */; };
 		E984AB5C2B98B29A002B59F5 /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E984AB5B2B98B29A002B59F5 /* MainSplitViewController.swift */; };
+		E9B70DFE2BA715C300B0E4FF /* AdvancedCollectionTableView in Frameworks */ = {isa = PBXBuildFile; productRef = E9B70DFD2BA715C300B0E4FF /* AdvancedCollectionTableView */; };
+		E9B70E002BA7166300B0E4FF /* MainSidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B70DFF2BA7166300B0E4FF /* MainSidebarViewController.swift */; };
+		E9B70E022BA717B700B0E4FF /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B70E012BA717B700B0E4FF /* Module.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +34,9 @@
 		E984AB4A2B960BB3002B59F5 /* Components */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Components; sourceTree = "<group>"; };
 		E984AB592B98B247002B59F5 /* MainWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
 		E984AB5B2B98B29A002B59F5 /* MainSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
+		E98AFE9A2BA5F0C60025BE5F /* AdvancedCollectionTableView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = AdvancedCollectionTableView; path = ../../../Fork/Library/AdvancedCollectionTableView; sourceTree = "<group>"; };
+		E9B70DFF2BA7166300B0E4FF /* MainSidebarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSidebarViewController.swift; sourceTree = "<group>"; };
+		E9B70E012BA717B700B0E4FF /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +47,7 @@
 				E984AB522B98B20C002B59F5 /* UIFoundation in Frameworks */,
 				E984AB542B98B20C002B59F5 /* UIFoundationAppleInternal in Frameworks */,
 				E984AB4D2B98B1BE002B59F5 /* ClassDumperUI in Frameworks */,
+				E9B70DFE2BA715C300B0E4FF /* AdvancedCollectionTableView in Frameworks */,
 				E984AB4F2B98B1C4002B59F5 /* ClassDumperCore in Frameworks */,
 				E984AB562B98B20C002B59F5 /* UIFoundationAppleInternalObjC in Frameworks */,
 				E984AB582B98B20C002B59F5 /* UIFoundationToolbox in Frameworks */,
@@ -53,6 +60,7 @@
 		E984AB2F2B960ACB002B59F5 = {
 			isa = PBXGroup;
 			children = (
+				E98AFE9A2BA5F0C60025BE5F /* AdvancedCollectionTableView */,
 				E984AB4A2B960BB3002B59F5 /* Components */,
 				E984AB3A2B960ACB002B59F5 /* ReverseEngineeringToolbox */,
 				E984AB392B960ACB002B59F5 /* Products */,
@@ -72,7 +80,9 @@
 			isa = PBXGroup;
 			children = (
 				E984AB3B2B960ACB002B59F5 /* AppDelegate.swift */,
+				E9B70E012BA717B700B0E4FF /* Module.swift */,
 				E984AB592B98B247002B59F5 /* MainWindowController.swift */,
+				E9B70DFF2BA7166300B0E4FF /* MainSidebarViewController.swift */,
 				E984AB5B2B98B29A002B59F5 /* MainSplitViewController.swift */,
 				E984AB3D2B960ACB002B59F5 /* ViewController.swift */,
 				E984AB3F2B960ACC002B59F5 /* Assets.xcassets */,
@@ -112,6 +122,7 @@
 				E984AB532B98B20C002B59F5 /* UIFoundationAppleInternal */,
 				E984AB552B98B20C002B59F5 /* UIFoundationAppleInternalObjC */,
 				E984AB572B98B20C002B59F5 /* UIFoundationToolbox */,
+				E9B70DFD2BA715C300B0E4FF /* AdvancedCollectionTableView */,
 			);
 			productName = ReverseEngineeringToolbox;
 			productReference = E984AB382B960ACB002B59F5 /* ReverseEngineeringToolbox.app */;
@@ -143,6 +154,7 @@
 			mainGroup = E984AB2F2B960ACB002B59F5;
 			packageReferences = (
 				E984AB502B98B20C002B59F5 /* XCRemoteSwiftPackageReference "UIFoundation" */,
+				E9B70DFC2BA715C300B0E4FF /* XCRemoteSwiftPackageReference "AdvancedCollectionTableView" */,
 			);
 			productRefGroup = E984AB392B960ACB002B59F5 /* Products */;
 			projectDirPath = "";
@@ -173,7 +185,9 @@
 				E984AB5C2B98B29A002B59F5 /* MainSplitViewController.swift in Sources */,
 				E984AB3E2B960ACB002B59F5 /* ViewController.swift in Sources */,
 				E984AB3C2B960ACB002B59F5 /* AppDelegate.swift in Sources */,
+				E9B70E002BA7166300B0E4FF /* MainSidebarViewController.swift in Sources */,
 				E984AB5A2B98B247002B59F5 /* MainWindowController.swift in Sources */,
+				E9B70E022BA717B700B0E4FF /* Module.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,6 +407,14 @@
 				kind = branch;
 			};
 		};
+		E9B70DFC2BA715C300B0E4FF /* XCRemoteSwiftPackageReference "AdvancedCollectionTableView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MxIris-macOS-Library-Forks/AdvancedCollectionTableView";
+			requirement = {
+				branch = Fix;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -423,6 +445,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E984AB502B98B20C002B59F5 /* XCRemoteSwiftPackageReference "UIFoundation" */;
 			productName = UIFoundationToolbox;
+		};
+		E9B70DFD2BA715C300B0E4FF /* AdvancedCollectionTableView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E9B70DFC2BA715C300B0E4FF /* XCRemoteSwiftPackageReference "AdvancedCollectionTableView" */;
+			productName = AdvancedCollectionTableView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -26,7 +26,7 @@
             <rect key="frame" x="0.0" y="0.0" width="854" height="791"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8rS-N0-AOG">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8rS-N0-AOG">
                     <rect key="frame" x="48" y="690" width="361" height="19"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" title="Select a framework or contains frameworks directory" id="Shi-LU-kCD">
                         <font key="font" metaFont="systemLight" size="15"/>
@@ -78,7 +78,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                 </button>
-                <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HYn-S7-zi3">
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HYn-S7-zi3">
                     <rect key="frame" x="50" y="555" width="754" height="22"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="22" id="Vb5-I2-hJe"/>
@@ -98,14 +98,14 @@
                         <rect key="frame" x="1" y="1" width="752" height="445"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" viewBased="YES" id="m88-9g-aOE">
+                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" viewBased="YES" id="m88-9g-aOE" customClass="ClassDumpFilesTableView" customModule="ClassDumperUI">
                                 <rect key="frame" x="0.0" y="0.0" width="744" height="437"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <size key="intercellSpacing" width="20" height="0.0"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
-                                    <tableColumn width="64" minWidth="10" maxWidth="3.4028234663852886e+38" id="DXg-Py-KLX">
+                                    <tableColumn width="186" minWidth="10" maxWidth="3.4028234663852886e+38" id="DXg-Py-KLX">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -118,11 +118,11 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView id="E4Y-hG-bGM">
-                                                <rect key="frame" x="10" y="0.0" width="56" height="24"/>
+                                                <rect key="frame" x="10" y="0.0" width="178" height="24"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J0u-F9-LvG">
-                                                        <rect key="frame" x="0.0" y="4" width="56" height="16"/>
+                                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J0u-F9-LvG">
+                                                        <rect key="frame" x="0.0" y="4" width="178" height="16"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="VjO-lb-vJt">
                                                             <font key="font" usesAppearanceFont="YES"/>

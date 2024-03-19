@@ -19,5 +19,6 @@ class MainWindowController: PlainXiblessWindowController {
         contentViewController = mainSplitViewController
         contentWindow.setFrame(.init(x: 0, y: 0, width: 1000, height: 800), display: true)
         contentWindow.center()
+        contentWindow.title = "ReverseEngineeringToolbox"
     }
 }
