@@ -98,8 +98,8 @@
                         <rect key="frame" x="1" y="1" width="752" height="445"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" viewBased="YES" id="m88-9g-aOE" customClass="ClassDumpFilesTableView" customModule="ClassDumperUI">
-                                <rect key="frame" x="0.0" y="0.0" width="744" height="437"/>
+                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" headerView="HhH-dk-G0U" viewBased="YES" id="m88-9g-aOE" customClass="ClassDumpFilesTableView" customModule="ClassDumperUI">
+                                <rect key="frame" x="0.0" y="0.0" width="744" height="409"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <size key="intercellSpacing" width="20" height="0.0"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -151,6 +151,10 @@
                         <rect key="frame" x="825" y="5" width="15" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
+                    <tableHeaderView key="headerView" wantsLayer="YES" id="HhH-dk-G0U">
+                        <rect key="frame" x="0.0" y="0.0" width="744" height="28"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </tableHeaderView>
                 </scrollView>
             </subviews>
             <constraints>

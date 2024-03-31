@@ -13,6 +13,7 @@ import FrameworkToolbox
 import FoundationToolbox
 import UniformTypeIdentifiers
 import ClassDumperCore
+import ApplicationLaunchers
 
 public class ClassDumpFilesViewController: XibViewController {
     public override class var nibBundle: Bundle { .module }
@@ -32,7 +33,7 @@ public class ClassDumpFilesViewController: XibViewController {
         super.viewDidLoad()
 //        tableView.dataSource = tableViewAdapter
 //        tableView.delegate = tableViewAdapter
-        tableViewAdapter.setupDataSource()
+        tableViewAdapter.setup()
         classDumpController.delegate = self
     }
 
@@ -67,9 +68,11 @@ public class ClassDumpFilesViewController: XibViewController {
             classDumpController.perform(for: url)
         }
     }
-
+    
     @IBAction func showInFinderButtonAction(_ sender: NSButton) {
-        classDumpController.showInFinder()
+        if let selectedSourceURL = classDumpController.currentSourceURL {
+            FinderLauncher(url: selectedSourceURL).run()
+        }
     }
 }
 
@@ -88,14 +91,14 @@ extension ClassDumpFilesViewController: ClassDumpFilesControllerDelegate {
 
     public func classDumpFilesController(_ controller: ClassDumpFilesController, willStartDumpableFile dumpableFile: ClassDumpableFile) {
 //        tableViewAdapter.reloadData(forRow: index, column: .progress)
-        tableViewAdapter.reloadItem(dumpableFile)
+        tableViewAdapter.reconfigureItem(dumpableFile)
     }
 
     public func classDumpFilesController(_ controller: ClassDumpFilesController, didCompleteDumpableFile dumpableFile: ClassDumpableFile) {
         let progressValue = classDumpController.completedDumpableFiles.count.double / classDumpController.parsedDumpableFiles.count.double
         totalProgressIndicator.doubleValue = progressValue
 //        tableViewAdapter.reloadData(forRow: index, column: .progress)
-        tableViewAdapter.reloadItem(dumpableFile)
+        tableViewAdapter.reconfigureItem(dumpableFile)
     }
 
     public func classDumpFilesControllerWillStartPerform(_ controller: ClassDumpFilesController) {

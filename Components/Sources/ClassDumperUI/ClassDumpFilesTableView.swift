@@ -15,12 +15,20 @@ class ClassDumpFilesTableView: NSTableView {
         style = .inset
         tableColumns.forEach(removeTableColumn(_:))
         columnAutoresizingStyle = .uniformColumnAutoresizingStyle
-        ClassDumpFilesTableColumn.allCases.forEach { column in
+        allowsColumnReordering = false
+        allowsColumnResizing = true
+        allowsColumnSelection = false
+        [ClassDumpFilesTableColumn.name, .operation, .progress].forEach { column in
             let tableColumn = NSTableColumn(identifier: column.identifier)
-            tableColumn.width = column.width.width
-            tableColumn.minWidth = column.width.minWidth
-            tableColumn.maxWidth = column.width.maxWidth
-            tableColumn.resizingMask = .autoresizingMask
+            tableColumn.title = column.title
+            tableColumn.width = column.width
+            if let minWidth = column.minWidth {
+                tableColumn.minWidth = minWidth
+            }
+            if let maxWidth = column.maxWidth {
+                tableColumn.maxWidth = maxWidth
+            }
+            tableColumn.resizingMask = column.resizingMask
             addTableColumn(tableColumn)
         }
     }

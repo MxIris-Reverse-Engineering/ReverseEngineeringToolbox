@@ -13,6 +13,8 @@ public final class ClassDumpViewController: XiblessViewController<NSView> {
     
     public private(set) lazy var simulatorViewController = ClassDumpSimulatorViewController()
     
+    public private(set) lazy var applicationsViewController = ClassDumpApplicationsViewController()
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,15 +25,26 @@ public final class ClassDumpViewController: XiblessViewController<NSView> {
         }
 
         tabView.tabViewType = .topTabsBezelBorder
-        let filesItem = NSTabViewItem(viewController: filesViewController)
-        filesItem.label = "Files"
+        
+        let filesItem = NSTabViewItem(viewController: filesViewController).then {
+            $0.label = "Files"
+        }
         tabView.addTabViewItem(filesItem)
-        let dyldItem = NSTabViewItem(viewController: dyldViewController)
-        dyldItem.label = "Dyld"
+        
+        let dyldItem = NSTabViewItem(viewController: dyldViewController).then {
+            $0.label = "Dyld"
+        }
         tabView.addTabViewItem(dyldItem)
-        let simulatorItem = NSTabViewItem(viewController: simulatorViewController)
-        simulatorItem.label = "Simulator"
+        
+        let simulatorItem = NSTabViewItem(viewController: simulatorViewController).then {
+            $0.label = "Simulator"
+        }
         tabView.addTabViewItem(simulatorItem)
+        
+        let applicationsItem = NSTabViewItem(viewController: applicationsViewController).then {
+            $0.label = "Applications"
+        }
+        tabView.addTabViewItem(applicationsItem)
     }
 }
 

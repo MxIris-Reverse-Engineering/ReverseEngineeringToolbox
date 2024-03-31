@@ -80,7 +80,7 @@ public class ClassDumpSimulatorViewController: XibViewController {
         }
         
         filesTableViewAdapter.do {
-            $0.setupDataSource()
+            $0.setup()
         }
         
         filesTableView.do {

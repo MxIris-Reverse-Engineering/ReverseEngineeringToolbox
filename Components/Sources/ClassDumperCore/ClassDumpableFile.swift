@@ -38,11 +38,11 @@ public class ClassDumpableFile: Hashable, Identifiable {
     }
 
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(url)
+        hasher.combine(executableURL)
     }
 
     public static func == (lhs: ClassDumpableFile, rhs: ClassDumpableFile) -> Bool {
-        lhs.url == rhs.url
+        lhs.executableURL == rhs.executableURL
     }
 
     public var id: ClassDumpableFile { self }

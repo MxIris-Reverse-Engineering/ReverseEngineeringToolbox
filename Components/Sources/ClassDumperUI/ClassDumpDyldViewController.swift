@@ -6,9 +6,13 @@ import ClassDumperCore
 import AdvancedCollectionTableView
 import FZUIKit
 
-public final class ClassDumpDyldViewController: XibViewController {
+public class ModuleXibViewController: XibViewController {
     public override class var nibBundle: Bundle { .module }
+}
+
+public final class ClassDumpDyldViewController: ModuleXibViewController {
     private typealias DataSource = TableViewDiffableDataSource<TableViewSection, ClassDumpableImage>
+    
     private typealias CellRegistration = NSTableView.CellRegistration<NSTableCellView, ClassDumpableImage>
 
     @IBOutlet var systemVersionValueLabel: NSTextField!

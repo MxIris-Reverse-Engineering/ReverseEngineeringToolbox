@@ -24,10 +24,12 @@ let package = Package(
         .package(url: "https://github.com/MxIris-Reverse-Engineering-Forks/ClassDump", branch: "main"),
         .package(url: "https://github.com/MxIris-Reverse-Engineering-Forks/ClassDumpDyld", branch: "main"),
         .package(url: "https://github.com/Mx-Iris/SFSymbol", branch: "main"),
-        .package(url: "https://github.com/MxIris-macOS-Library-Forks/AdvancedCollectionTableView", branch: "Fix"),
-//        .package(path: "/Volumes/Repositories/Private/Fork/Library/AdvancedCollectionTableView"),
+        .package(url: "https://github.com/flocked/AdvancedCollectionTableView", branch: "main"),
         .package(url: "https://github.com/freysie/ide-icons", branch: "main"),
         .package(url: "https://github.com/j-f1/MenuBuilder", branch: "main"),
+        .package(url: "https://github.com/zenangst/Apps", branch: "main"),
+//        .package(url: "https://github.com/leptos-null/ClassDumpRuntime", branch: "master"),
+        .package(path: "/Volumes/Repositories/Private/Fork/Library/ClassDumpRuntime"),
     ],
     targets: [
         .target(
@@ -36,9 +38,14 @@ let package = Package(
                 "SimulatorManager",
                 .product(name: "ClassDump", package: "ClassDump"),
                 .product(name: "ClassDumpDyld", package: "ClassDumpDyld"),
+                .product(name: "ClassDumpRuntime", package: "ClassDumpRuntime"),
                 .product(name: "ExceptionCatcher", package: "ExceptionCatcher"),
                 .product(name: "FrameworkToolbox", package: "FrameworkToolbox"),
                 .product(name: "FoundationToolbox", package: "FrameworkToolbox"),
+                .product(name: "Apps", package: "Apps")
+            ],
+            swiftSettings: [
+                .enableExperimentalFeature("AccessLevelOnImport")
             ]
         ),
         .target(

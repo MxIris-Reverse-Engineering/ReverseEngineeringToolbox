@@ -1,5 +1,5 @@
 import Foundation
-@_implementationOnly import ClassDumpDyld
+@_implementationOnly private import ClassDumpDyld
 
 public protocol ClassDumpDyldControllerDelegate: AnyObject {
     func classDumpDyldController(_ controller: ClassDumpDyldController, didSearchImages images: [ClassDumpableImage])

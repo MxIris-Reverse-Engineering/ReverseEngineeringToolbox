@@ -19,6 +19,10 @@ public struct HopperDisassemblerLauncher {
         self.executableURL = executableURL
     }
 
+    public static var isAvailable: Bool {
+        FileManager.default.fileExists(atPath: "/usr/local/bin/hopperv4")
+    }
+    
     private static let commandLineExecutableURL = URL(fileURLWithPath: "/usr/local/bin/hopperv4")
 
     private static let bundleIdentifier = "com.cryptic-apps.hopper-web-4"

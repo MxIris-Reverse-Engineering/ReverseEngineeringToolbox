@@ -180,8 +180,8 @@
                         <rect key="frame" x="1" y="1" width="751" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" viewBased="YES" id="VSn-Jl-WUd" customClass="ClassDumpFilesTableView" customModule="ClassDumperUI">
-                                <rect key="frame" x="0.0" y="0.0" width="751" height="375"/>
+                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" headerView="5Xw-rk-Qgs" viewBased="YES" id="VSn-Jl-WUd" customClass="ClassDumpFilesTableView" customModule="ClassDumperUI">
+                                <rect key="frame" x="0.0" y="0.0" width="751" height="347"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <size key="intercellSpacing" width="17" height="0.0"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -231,6 +231,10 @@
                         <rect key="frame" x="224" y="17" width="15" height="102"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
+                    <tableHeaderView key="headerView" wantsLayer="YES" id="5Xw-rk-Qgs">
+                        <rect key="frame" x="0.0" y="0.0" width="751" height="28"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </tableHeaderView>
                 </scrollView>
             </subviews>
             <constraints>

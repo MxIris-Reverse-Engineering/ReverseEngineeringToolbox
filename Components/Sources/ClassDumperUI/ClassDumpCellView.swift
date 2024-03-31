@@ -13,16 +13,48 @@ import ClassDumperCore
 import IDEIcons
 
 class ClassDumpNameCellView: ImageTextTableCellView {
-    func configure(for file: ClassDumpableFile) {
+    
+    protocol Configurable {
+        var filename: String { get }
+        var icon: NSImage? { get }
+    }
+    
+    func configure(for file: Configurable) {
         textField?.stringValue = file.filename
-        switch file.type {
-        case .framework:
-            imageView?.image = Bundle.module.image(forResource: "FrameworkIcon").map { $0.box.toSize(.init(width: 18, height: 18)) }
-        case .executable, .dylib:
-            imageView?.image = Bundle.module.image(forResource: "ExecutableBinaryIcon").map { $0.box.toSize(.init(width: 18, height: 18)) }
-        }
+        imageView?.image = file.icon.map { $0.box.toSize(.init(width: 18, height: 18)) }
     }
 }
+
+extension ClassDumpableFile: ClassDumpNameCellView.Configurable {
+    var icon: NSImage? { type.icon }
+}
+
+extension ClassDumpableApplication: ClassDumpNameCellView.Configurable {
+    var filename: String { displayName }
+    var icon: NSImage? { NSWorkspace.shared.icon(forFile: url.path) }
+}
+
+extension ClassDumpableApplication.FrameworkDirectory: ClassDumpNameCellView.Configurable {
+    var filename: String { name }
+    var icon: NSImage? { .init(named: NSImage.folderName) }
+}
+
+//extension ClassDumpableApplication.Executable: ClassDumpNameCellView.Configurable {
+//    var filename: String { url.lastPathComponent }
+//    var icon: NSImage? { type.icon }
+//}
+//
+//extension ClassDumpableApplication.Framework: ClassDumpNameCellView.Configurable {
+//    var filename: String { url.lastPathComponent }
+//    var icon: NSImage? { type.icon }
+//}
+
+extension String {
+    var image: NSImage? {
+        return Bundle.module.image(forResource: self)
+    }
+}
+
 
 class ClassDumpTypeCellView: TableCellView {
     let typeImageView = NSImageView()

@@ -1,5 +1,5 @@
-import AppKit
-import ClassDump
+import Foundation
+private import ClassDump
 import ExceptionCatcher
 import FrameworkToolbox
 import FoundationToolbox
@@ -14,7 +14,9 @@ public protocol ClassDumpFilesControllerDelegate: AnyObject {
     func classDumpFilesControllerDidCompletePerform(_ controller: ClassDumpFilesController)
 }
 
-public final class ClassDumpFilesController {
+
+
+public final class ClassDumpFilesController: ClassDumpFileControllerDelegate {
     public weak var delegate: ClassDumpFilesControllerDelegate?
 
     public private(set) var currentSourceURL: URL?
@@ -37,11 +39,10 @@ public final class ClassDumpFilesController {
 
     private let group = DispatchGroup()
 
-    public init() {}
+    private let classDumpFileController = ClassDumpFileController()
 
-    public func showInFinder() {
-        guard let currentSourceURL else { return }
-        NSWorkspace.shared.activateFileViewerSelecting([currentSourceURL])
+    public init() {
+        classDumpFileController.delegate = self
     }
 
     public func selectSourceURL(_ url: URL) throws {
@@ -52,10 +53,12 @@ public final class ClassDumpFilesController {
         if currentSourceFileWrapper.isDirectory, url.lastPathComponent.pathExtension != "framework" {
             delegate?.classDumpFilesController(self, willParseSourceURL: url)
             serialQueue.async {
-                for childrenURL in url.box.enumerator(options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants, .skipsPackageDescendants]) {
-                    self.parseURLContent(childrenURL)
-                }
+//                for childrenURL in  {
+//                    self.parseURLContent(childrenURL)
+//                }
 
+                let dumpableFiles = url.parseDumpableFileInDirectory(options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants, .skipsPackageDescendants])
+                self.parsedDumpableFiles.append(contentsOf: dumpableFiles)
                 DispatchQueue.main.async {
                     self.parsedDumpableFiles.sort(for: \.executableURL.lastPathComponent, by: <)
                     self.delegate?.classDumpFilesController(self, didSelectSourceURL: url)
@@ -63,44 +66,14 @@ public final class ClassDumpFilesController {
             }
         } else {
             delegate?.classDumpFilesController(self, willParseSourceURL: url)
-            parseURLContent(url)
+            url.parseDumpableFile().map { parsedDumpableFiles.append($0) }
             delegate?.classDumpFilesController(self, didSelectSourceURL: url)
-        }
-    }
-
-    private func parseURLContent(_ url: URL) {
-        if let contentType = try? url.resourceValues(forKeys: [.contentTypeKey]).contentType {
-            switch contentType {
-            case .framework:
-                for childrenURL in url.box.enumerator(options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants, .skipsPackageDescendants]) {
-                    if let fileWrapper = try? FileWrapper(url: childrenURL) {
-                        if fileWrapper.isSymbolicLink, let symbolicLinkDestinationURL = fileWrapper.symbolicLinkDestinationURL {
-                            let symbolicLinkDestinationFullURL = url.appendingPathComponent(symbolicLinkDestinationURL.path)
-                            if let contentType = try? symbolicLinkDestinationFullURL.resourceValues(forKeys: [.contentTypeKey]).contentType {
-                                if contentType == .unixExecutable {
-                                    parsedDumpableFiles.append(.init(url: url, executableURL: symbolicLinkDestinationFullURL, type: .framework))
-                                    continue
-                                }
-                            }
-                        }
-                    }
-                    if let contentType = try? childrenURL.resourceValues(forKeys: [.contentTypeKey]).contentType, contentType == .unixExecutable {
-                        parsedDumpableFiles.append(.init(url: url, executableURL: childrenURL, type: .framework))
-                    }
-                }
-            case .unixExecutable:
-                parsedDumpableFiles.append(.init(url: url, executableURL: url, type: .executable))
-            case .dylib:
-                parsedDumpableFiles.append(.init(url: url, executableURL: url, type: .dylib))
-            default:
-                break
-            }
         }
     }
 
     public func perform(for dumpableFile: ClassDumpableFile, to destinationRootURL: URL) {
         serialQueue.async {
-            self._perform(for: dumpableFile, to: destinationRootURL)
+            self.classDumpFileController.perform(for: dumpableFile, to: destinationRootURL)
         }
     }
 
@@ -108,9 +81,9 @@ public final class ClassDumpFilesController {
         guard currentSourceURL != nil, !parsedDumpableFiles.isEmpty else { return }
         completedDumpableFiles = []
         delegate?.classDumpFilesControllerWillStartPerform(self)
-        for (index, parsedDumpableFile) in parsedDumpableFiles.enumerated() {
+        for (_, parsedDumpableFile) in parsedDumpableFiles.enumerated() {
             concurrentQueue.async(group: group) {
-                self._perform(for: parsedDumpableFile, to: currentDestinationURL)
+                self.classDumpFileController.perform(for: parsedDumpableFile, to: currentDestinationURL)
             }
         }
         group.notify(queue: .main) {
@@ -118,33 +91,13 @@ public final class ClassDumpFilesController {
         }
     }
 
-    private func _perform(for dumpableFile: ClassDumpableFile, to destinationRootURL: URL) {
-        assert(!Thread.isMainThread, "This function cannot be called from the main thread")
-        let sourcePath = dumpableFile.executableURL.path
-        let destinationPath = destinationRootURL.appendingPathComponent(sourcePath.lastPathComponent.deletingPathExtension).path
-        if !fileManager.fileExists(atPath: destinationPath) {
-            try? fileManager.createDirectory(atPath: destinationPath, withIntermediateDirectories: true)
-        }
-        do {
-            DispatchQueue.main.sync {
-                dumpableFile.state = .loading
-                self.delegate?.classDumpFilesController(self, willStartDumpableFile: dumpableFile)
-            }
-            try ExceptionCatcher.catch { try ClassDumpManager.shared.performClassDump(onFile: sourcePath, toFolder: destinationPath) }
-            DispatchQueue.main.sync {
-                dumpableFile.state = .success
-                self.completedDumpableFiles.append(dumpableFile)
-                self.delegate?.classDumpFilesController(self, didCompleteDumpableFile: dumpableFile)
-            }
-        } catch {
-            print(error.localizedDescription)
-            debugPrint(error)
-            DispatchQueue.main.sync {
-                dumpableFile.state = .failure
-                self.completedDumpableFiles.append(dumpableFile)
-                self.delegate?.classDumpFilesController(self, didCompleteDumpableFile: dumpableFile)
-            }
-        }
+    public func classDumpFileController(_ controller: ClassDumpFileController, willStartDumpableFile dumpableFile: ClassDumpableFile) {
+        delegate?.classDumpFilesController(self, willStartDumpableFile: dumpableFile)
+    }
+
+    public func classDumpFileController(_ controller: ClassDumpFileController, didCompleteDumpableFile dumpableFile: ClassDumpableFile) {
+        completedDumpableFiles.append(dumpableFile)
+        delegate?.classDumpFilesController(self, didCompleteDumpableFile: dumpableFile)
     }
 }
 
@@ -161,4 +114,39 @@ func print(_ item: Any?) -> Bool {
 
 extension UTType {
     static let dylib = UTType("com.apple.mach-o-dylib")!
+}
+
+extension URL {
+    func parseDumpableFileInDirectory(options: FileManager.DirectoryEnumerationOptions) -> [ClassDumpableFile] {
+        box.enumerator(options: options).compactMap { $0.parseDumpableFile() }
+    }
+
+    func parseDumpableFile() -> ClassDumpableFile? {
+        guard let contentType = try? resourceValues(forKeys: [.contentTypeKey]).contentType else { return nil }
+        switch contentType {
+        case .framework:
+            for childrenURL in box.enumerator(options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants, .skipsPackageDescendants]) {
+                if let fileWrapper = try? FileWrapper(url: childrenURL) {
+                    if fileWrapper.isSymbolicLink, let symbolicLinkDestinationURL = fileWrapper.symbolicLinkDestinationURL {
+                        let symbolicLinkDestinationFullURL = appendingPathComponent(symbolicLinkDestinationURL.path)
+                        if let contentType = try? symbolicLinkDestinationFullURL.resourceValues(forKeys: [.contentTypeKey]).contentType {
+                            if contentType == .unixExecutable {
+                                return .init(url: self, executableURL: symbolicLinkDestinationFullURL, type: .framework)
+                            }
+                        }
+                    }
+                }
+                if let contentType = try? childrenURL.resourceValues(forKeys: [.contentTypeKey]).contentType, contentType == .unixExecutable {
+                    return .init(url: self, executableURL: childrenURL, type: .framework)
+                }
+            }
+        case .unixExecutable:
+            return .init(url: self, executableURL: self, type: .executable)
+        case .dylib:
+            return .init(url: self, executableURL: self, type: .dylib)
+        default:
+            break
+        }
+        return nil
+    }
 }
