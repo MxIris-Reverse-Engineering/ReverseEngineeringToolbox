@@ -11,6 +11,8 @@ import UIFoundation
 import UIFoundationToolbox
 import ClassDumperCore
 import IDEIcons
+import AssociatedObject
+import FZSwiftUtils
 
 class ClassDumpNameCellView: ImageTextTableCellView {
     
@@ -31,7 +33,27 @@ extension ClassDumpableFile: ClassDumpNameCellView.Configurable {
 
 extension ClassDumpableApplication: ClassDumpNameCellView.Configurable {
     var filename: String { displayName }
-    var icon: NSImage? { NSWorkspace.shared.icon(forFile: url.path) }
+    
+//    @AssociatedObject(.retain(.nonatomic))
+    var _iconCache: NSImage? {
+        set {
+            setAssociatedValue(newValue, key: #function, object: self)
+        }
+        get {
+            getAssociatedValue(#function, object: self)
+        }
+    }
+    
+    
+    var icon: NSImage? {
+        if let iconCache = _iconCache {
+            return iconCache
+        } else {
+            let icon = NSWorkspace.shared.icon(forFile: url.path)
+            _iconCache = icon
+            return icon
+        }
+    }
 }
 
 extension ClassDumpableApplication.FrameworkDirectory: ClassDumpNameCellView.Configurable {
@@ -87,9 +109,9 @@ class ClassDumpOperationCellView: TableCellView {
 
     override func setup() {
         super.setup()
-        showInFinderOperationButton.image = Bundle.module.image(forResource: "FinderAppIcon").map { $0.box.toSize(.init(width: 20, height: 20)) }
+        showInFinderOperationButton.image = .finderAppIcon(forSize: 20)
         showInFinderOperationButton.isBordered = false
-        openInHopperDisassemblerOperationButton.image = Bundle.module.image(forResource: "HopperDisassemblerAppIcon").map { $0.box.toSize(.init(width: 20, height: 20)) }
+        openInHopperDisassemblerOperationButton.image = .hopperAppIcon(forSize: 20)
         openInHopperDisassemblerOperationButton.isBordered = false
         dumpOperationButton.image = IDEIcon("C", size: 18).image
         dumpOperationButton.isBordered = false
@@ -98,6 +120,27 @@ class ClassDumpOperationCellView: TableCellView {
         contentStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+}
+
+
+extension CGSize: ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral {
+    public init(floatLiteral value: Double) {
+        self.init(width: value, height: value)
+    }
+    
+    public init(integerLiteral value: Int) {
+        self.init(width: value, height: value)
+    }
+}
+
+extension NSImage {
+    static func finderAppIcon(forSize size: CGSize) -> NSImage? {
+        "FinderAppIcon".image?.box.toSize(size)
+    }
+    
+    static func hopperAppIcon(forSize size: CGSize) -> NSImage? {
+        "HopperDisassemblerAppIcon".image?.box.toSize(size)
     }
 }
 

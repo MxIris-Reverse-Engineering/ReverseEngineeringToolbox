@@ -67,53 +67,52 @@ public class ClassDumpSimulatorViewController: XibViewController {
         runtimesTableView.do {
             $0.dataSource = runtimesTableViewDataSource
             $0.doubleAction = #selector(runtimesTableViewDoubleAction(_:))
+            $0.menu = NSMenu {
+                MenuItem("Show in Finder")
+                    .onSelect { [weak self] in
+                        guard let self else { return }
+                        guard runtimesTableView.hasValidClickedRow else { return }
+                        guard let runtime = runtimesTableViewDataSource.item(forRow: runtimesTableView.clickedRow) else { return }
+                        FinderLauncher(url: runtime.path.filePathURL).run()
+                    }
+            }
         }
-        
+
         pathsTableView.do {
             $0.dataSource = pathsTableViewDataSource
             $0.doubleAction = #selector(pathsTableViewDoubleAction(_:))
+            $0.menu = NSMenu {
+                MenuItem("Show in Finder")
+                    .onSelect { [weak self] in
+                        guard let self else { return }
+                        guard pathsTableView.hasValidClickedRow else { return }
+                        guard let path = pathsTableViewDataSource.item(forRow: pathsTableView.clickedRow) else { return }
+                        guard let selectedRuntime = runtimesTableViewDataSource.selectedItems.first else { return }
+                        FinderLauncher(url: selectedRuntime.runtimeRootPath.filePathURL.appendingPathComponent(path)).run()
+                    }
+            }
         }
-        
+
         classDumpSimulatorController.do {
             $0.delegate = self
             $0.classDumpFilesController.delegate = self
         }
-        
+
         filesTableViewAdapter.do {
             $0.setup()
         }
-        
+
         filesTableView.do {
             $0.sizeToFit()
         }
-        
+
         runtimesTableViewDataSource.do {
-            $0.menuProvider = { runtimes in
-                guard let runtime = runtimes.first else { return nil }
-                return NSMenu {
-                    MenuItem("Show in Finder")
-                        .onSelect {
-                            FinderLauncher(url: runtime.path.filePathURL).run()
-                        }
-                }
-            }
             $0.emptyContentConfiguration = NSContentUnavailableConfiguration.emptyContentConfiguration("No Available Runtimes")
         }
+
         pathsTableViewDataSource.do {
-            $0.menuProvider = { [weak self] paths in
-                guard let self, let selectedRuntime = self.classDumpSimulatorController.selectedRuntime, let path = paths.first else { return nil }
-                return NSMenu {
-                    MenuItem("Show in Finder")
-                        .onSelect {
-                            let url = selectedRuntime.runtimeRootPath.filePathURL.appendingPathComponent(path)
-                            FinderLauncher(url: url).run()
-                        }
-                }
-            }
             $0.emptyContentConfiguration = NSContentUnavailableConfiguration.emptyContentConfiguration("No Available Paths")
         }
-        
-       
     }
 
     @IBAction func searchRuntimesButtonAction(_ sender: NSButton) {

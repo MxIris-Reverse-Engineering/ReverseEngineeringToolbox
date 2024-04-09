@@ -5,14 +5,11 @@ import UIFoundation
 import ClassDumperCore
 import AdvancedCollectionTableView
 import FZUIKit
-
-public class ModuleXibViewController: XibViewController {
-    public override class var nibBundle: Bundle { .module }
-}
+import ApplicationLaunchers
 
 public final class ClassDumpDyldViewController: ModuleXibViewController {
     private typealias DataSource = TableViewDiffableDataSource<TableViewSection, ClassDumpableImage>
-    
+
     private typealias CellRegistration = NSTableView.CellRegistration<NSTableCellView, ClassDumpableImage>
 
     @IBOutlet var systemVersionValueLabel: NSTextField!
@@ -23,6 +20,10 @@ public final class ClassDumpDyldViewController: ModuleXibViewController {
 
     @IBOutlet var imagesTableView: NSTableView!
 
+    @IBOutlet var showInFinderButton: NSButton!
+    
+    @IBOutlet var openInHopperButton: NSButton!
+    
     private let classDumpDyldController = ClassDumpDyldController()
 
     private lazy var imagesTableViewDataSource: DataSource = {
@@ -33,19 +34,51 @@ public final class ClassDumpDyldViewController: ModuleXibViewController {
         }
         return DataSource(tableView: imagesTableView, cellRegistration: cellRegistration)
     }()
-
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
 
         systemVersionValueLabel.stringValue = ProcessInfo.processInfo.operatingSystemVersionString
 
         classDumpDyldController.delegate = self
-
-        imagesTableView.dataSource = imagesTableViewDataSource
+        showInFinderButton.image = .finderAppIcon(forSize: 20)
+        openInHopperButton.image = .hopperAppIcon(forSize: 20)
+        
+        imagesTableView.do {
+            $0.dataSource = imagesTableViewDataSource
+            $0.menu = NSMenu {
+                MenuItem("Copy Value")
+                    .onSelect { [weak self] in
+                        guard let self else { return }
+                        guard imagesTableView.hasValidClickedRow, let image = imagesTableViewDataSource.item(forRow: imagesTableView.clickedRow) else { return }
+                        NSPasteboard.general.string = image.path
+                    }
+            }
+        }
     }
 
     @IBAction func searchImagesButtonAction(_ sender: NSButton) {
         classDumpDyldController.searchImages()
+    }
+
+    @IBAction func targetArchRadioButtonAction(_ sender: NSButton) {
+        guard let targetArch = ClassDumpDyldArch(rawValue: sender.tag) else { return }
+        classDumpDyldController.selectTargetArch(targetArch)
+    }
+    
+    @IBAction func showInFinderButtonAction(_ sender: NSButton) {
+        FinderLauncher(url: classDumpDyldController.dyldSharedCacheURLForSelectedTargetArch).run()
+    }
+    
+    @IBAction func openInHopperButtonAction(_ sender: NSButton) {
+        HopperDisassemblerLauncher(executableURL: classDumpDyldController.dyldSharedCacheURLForSelectedTargetArch).run { result in
+            switch result {
+            case .success:
+                break
+            case .failure(let failure):
+                NSAlert(error: failure).runModal()
+            }
+        }
     }
 }
 
@@ -53,7 +86,7 @@ extension ClassDumpDyldViewController: ClassDumpDyldControllerDelegate {
     public func classDumpDyldController(_ controller: ClassDumperCore.ClassDumpDyldController, didSearchImages images: [ClassDumperCore.ClassDumpableImage]) {
         var snapshot = imagesTableViewDataSource.emptySnapshot()
         snapshot.appendSections([.main])
-        snapshot.appendItems(images, toSection: .main)
+        snapshot.appendItems(images.sorted(by: \.path), toSection: .main)
         imagesTableViewDataSource.apply(snapshot, .withoutAnimation)
     }
 

@@ -1,10 +1,9 @@
 import Foundation
 import Combine
 import FoundationToolbox
+import Apps
 
-private import Apps
-
-public struct ClassDumpableApplication: Hashable, Identifiable {
+public class ClassDumpableApplication: Hashable, Identifiable {
     public struct FrameworkDirectory: Hashable {
         public let name: String
         public let frameworks: [ClassDumpableFile]
@@ -14,8 +13,25 @@ public struct ClassDumpableApplication: Hashable, Identifiable {
     public let bundleIdentifier: String
     public let executable: ClassDumpableFile
     public let frameworkDirectories: [FrameworkDirectory]
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(url)
+    }
+
+    public static func == (lhs: ClassDumpableApplication, rhs: ClassDumpableApplication) -> Bool {
+        lhs.url == rhs.url
+    }
+
+    public init(url: URL, bundleIdentifier: String, executable: ClassDumpableFile, frameworkDirectories: [FrameworkDirectory]) {
+        self.url = url
+        self.bundleIdentifier = bundleIdentifier
+        self.executable = executable
+        self.frameworkDirectories = frameworkDirectories
+    }
+
     public var displayName: String { FileManager.default.displayName(atPath: url.path) }
-    public var id: Self { self }
+
+    public var id: ClassDumpableApplication { self }
 }
 
 public protocol ClassDumpApplicationsControllerDelegate: AnyObject {

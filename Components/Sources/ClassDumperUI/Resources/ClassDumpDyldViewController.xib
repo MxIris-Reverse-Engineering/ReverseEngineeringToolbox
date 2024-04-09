@@ -9,8 +9,10 @@
         <customObject id="-2" userLabel="File's Owner" customClass="ClassDumpDyldViewController" customModule="ClassDumperUI">
             <connections>
                 <outlet property="imagesTableView" destination="c6B-Gv-4Vz" id="upZ-Ue-ika"/>
+                <outlet property="openInHopperButton" destination="BnF-OX-NU4" id="o5C-bS-WBo"/>
                 <outlet property="performDumpAllImageButton" destination="ylj-KK-9ib" id="3wG-0t-hRF"/>
                 <outlet property="searchImagesButton" destination="dBj-sB-1Iu" id="buO-X1-DvA"/>
+                <outlet property="showInFinderButton" destination="Qrz-08-qt5" id="a8P-qx-jHo"/>
                 <outlet property="systemVersionValueLabel" destination="vIN-MU-Hzz" id="bfZ-av-A4j"/>
                 <outlet property="view" destination="c22-O7-iKe" id="hp9-BM-MZf"/>
             </connections>
@@ -60,16 +62,106 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                             </button>
+                            <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="15" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PhT-sK-tRz">
+                                <rect key="frame" x="202" y="17" width="242" height="16"/>
+                                <subviews>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="odC-3y-lyc">
+                                        <rect key="frame" x="-2" y="-1" width="72" height="18"/>
+                                        <buttonCell key="cell" type="radio" title="Current" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="7ZN-ZX-aO6">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="targetArchRadioButtonAction:" target="-2" id="CSd-0T-Noz"/>
+                                        </connections>
+                                    </button>
+                                    <button tag="1" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4VM-XD-kJX">
+                                        <rect key="frame" x="83" y="-1" width="74" height="18"/>
+                                        <buttonCell key="cell" type="radio" title="arm64e" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="zcP-In-CK6">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="targetArchRadioButtonAction:" target="-2" id="KYW-Fs-5VK"/>
+                                        </connections>
+                                    </button>
+                                    <button tag="2" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RHq-vr-kV6">
+                                        <rect key="frame" x="170" y="-1" width="72" height="18"/>
+                                        <buttonCell key="cell" type="radio" title="x86_64" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="KuP-8b-5aJ">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="targetArchRadioButtonAction:" target="-2" id="hId-Yp-Ias"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
+                            <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="15" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1VE-oQ-hAI">
+                                <rect key="frame" x="492" y="15" width="55" height="20"/>
+                                <subviews>
+                                    <button translatesAutoresizingMaskIntoConstraints="NO" id="Qrz-08-qt5">
+                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="FinderAppIcon" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="vMj-Rb-dTd">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="20" id="Pdt-4Q-jGo"/>
+                                            <constraint firstAttribute="height" constant="20" id="gUZ-Wb-KyK"/>
+                                        </constraints>
+                                        <connections>
+                                            <action selector="showInFinderButtonAction:" target="-2" id="M1I-uY-NIY"/>
+                                        </connections>
+                                    </button>
+                                    <button translatesAutoresizingMaskIntoConstraints="NO" id="BnF-OX-NU4">
+                                        <rect key="frame" x="35" y="0.0" width="20" height="20"/>
+                                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="HopperDisassemblerAppIcon" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="gld-Qe-fwn">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="20" id="7En-ed-aG7"/>
+                                            <constraint firstAttribute="height" constant="20" id="jl9-aZ-GSA"/>
+                                        </constraints>
+                                        <connections>
+                                            <action selector="openInHopperButtonAction:" target="-2" id="Zwx-Rw-Y6P"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="1VE-oQ-hAI" firstAttribute="centerY" secondItem="PhT-sK-tRz" secondAttribute="centerY" id="7tG-V9-v4P"/>
+                            <constraint firstItem="PhT-sK-tRz" firstAttribute="centerY" secondItem="dBj-sB-1Iu" secondAttribute="centerY" id="Mtw-gg-A4e"/>
                             <constraint firstAttribute="bottom" secondItem="dBj-sB-1Iu" secondAttribute="bottom" constant="15" id="Qvd-Ja-vX6"/>
                             <constraint firstItem="1rQ-Ja-b5b" firstAttribute="top" secondItem="Uh0-Mq-fDJ" secondAttribute="top" constant="15" id="TNQ-9B-PPX"/>
                             <constraint firstItem="dBj-sB-1Iu" firstAttribute="leading" secondItem="Uh0-Mq-fDJ" secondAttribute="leading" id="Umw-AP-YoO"/>
                             <constraint firstItem="vIN-MU-Hzz" firstAttribute="centerY" secondItem="1rQ-Ja-b5b" secondAttribute="centerY" id="Uud-Hb-uHl"/>
                             <constraint firstAttribute="bottom" secondItem="ylj-KK-9ib" secondAttribute="bottom" constant="15" id="ZTU-49-lpq"/>
                             <constraint firstAttribute="trailing" secondItem="ylj-KK-9ib" secondAttribute="trailing" id="bxi-yK-hrU"/>
+                            <constraint firstItem="PhT-sK-tRz" firstAttribute="leading" secondItem="dBj-sB-1Iu" secondAttribute="trailing" constant="92" id="by4-Wz-X27"/>
                             <constraint firstItem="vIN-MU-Hzz" firstAttribute="leading" secondItem="1rQ-Ja-b5b" secondAttribute="trailing" constant="27" id="qgg-RA-UQ6"/>
                             <constraint firstItem="1rQ-Ja-b5b" firstAttribute="leading" secondItem="Uh0-Mq-fDJ" secondAttribute="leading" id="wnm-ae-4eK"/>
+                            <constraint firstItem="1VE-oQ-hAI" firstAttribute="leading" secondItem="PhT-sK-tRz" secondAttribute="trailing" constant="48" id="xTn-OE-sKs"/>
                         </constraints>
                     </view>
                     <constraints>
@@ -147,4 +239,8 @@
             <point key="canvasLocation" x="325.5" y="350"/>
         </customView>
     </objects>
+    <resources>
+        <image name="FinderAppIcon" width="512" height="512"/>
+        <image name="HopperDisassemblerAppIcon" width="512" height="512"/>
+    </resources>
 </document>

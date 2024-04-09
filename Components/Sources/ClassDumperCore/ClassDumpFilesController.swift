@@ -1,4 +1,5 @@
 import Foundation
+
 private import ClassDump
 import ExceptionCatcher
 import FrameworkToolbox
@@ -13,8 +14,6 @@ public protocol ClassDumpFilesControllerDelegate: AnyObject {
     func classDumpFilesControllerWillStartPerform(_ controller: ClassDumpFilesController)
     func classDumpFilesControllerDidCompletePerform(_ controller: ClassDumpFilesController)
 }
-
-
 
 public final class ClassDumpFilesController: ClassDumpFileControllerDelegate {
     public weak var delegate: ClassDumpFilesControllerDelegate?
@@ -113,7 +112,7 @@ func print(_ item: Any?) -> Bool {
 }
 
 extension UTType {
-    static let dylib = UTType("com.apple.mach-o-dylib")!
+    public static let dylib = UTType("com.apple.mach-o-dylib")!
 }
 
 extension URL {

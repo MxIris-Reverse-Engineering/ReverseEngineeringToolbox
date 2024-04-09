@@ -1,4 +1,5 @@
 import Foundation
+import UniformTypeIdentifiers
 
 public enum ClassDumpingState {
     case ready
@@ -14,7 +15,6 @@ public enum ClassDumpableFileType {
 }
 
 public class ClassDumpableFile: Hashable, Identifiable {
-    
     public let url: URL
 
     public let executableURL: URL
@@ -46,4 +46,27 @@ public class ClassDumpableFile: Hashable, Identifiable {
     }
 
     public var id: ClassDumpableFile { self }
+}
+
+extension ClassDumpableFile {
+    public func contentType(asExecutable: Bool) -> UTType {
+        switch type {
+        case .framework:
+            return asExecutable ? .unixExecutable : .framework
+        case .executable:
+            return .unixExecutable
+        case .dylib:
+            return .dylib
+        }
+    }
+}
+
+extension ClassDumpableFile {
+    public func write(to destinationURL: URL) throws {
+        try FileManager.default.copyItem(at: url, to: destinationURL)
+    }
+
+    public func writeExecutable(to destinationURL: URL) throws {
+        try FileManager.default.copyItem(at: executableURL, to: destinationURL)
+    }
 }

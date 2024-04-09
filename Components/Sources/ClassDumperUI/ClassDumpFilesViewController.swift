@@ -15,9 +15,7 @@ import UniformTypeIdentifiers
 import ClassDumperCore
 import ApplicationLaunchers
 
-public class ClassDumpFilesViewController: XibViewController {
-    public override class var nibBundle: Bundle { .module }
-
+public class ClassDumpFilesViewController: ModuleXibViewController {
     @IBOutlet var selectSourceButton: NSButton!
     @IBOutlet var performButton: NSButton!
     @IBOutlet var showInFinderButton: NSButton!
@@ -42,6 +40,7 @@ public class ClassDumpFilesViewController: XibViewController {
         openPanel.allowedContentTypes = [.unixExecutable, .framework]
         openPanel.canChooseDirectories = true
         openPanel.allowsMultipleSelection = false
+        openPanel.treatsFilePackagesAsDirectories = true
         let response = openPanel.runModal()
         guard response == .OK, let url = openPanel.url else { return }
         do {

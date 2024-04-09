@@ -1,5 +1,7 @@
 import Foundation
-@_implementationOnly private import ClassDumpDyld
+@_exported public import enum ClassDumpDyld.ClassDumpDyldArch
+
+private import class ClassDumpDyld.ClassDumpDyldManager
 
 public protocol ClassDumpDyldControllerDelegate: AnyObject {
     func classDumpDyldController(_ controller: ClassDumpDyldController, didSearchImages images: [ClassDumpableImage])
@@ -8,6 +10,8 @@ public protocol ClassDumpDyldControllerDelegate: AnyObject {
 
 public final class ClassDumpDyldController {
     public weak var delegate: ClassDumpDyldControllerDelegate?
+
+    public private(set) var selectedTargetArch: ClassDumpDyldArch = .current
 
     private let classDumpDyldManager = ClassDumpDyldManager.shared
 
@@ -25,4 +29,12 @@ public final class ClassDumpDyldController {
     }
 
     public func performDumpImage(_ image: ClassDumpableImage) {}
+
+    public func selectTargetArch(_ targetArch: ClassDumpDyldArch) {
+        selectedTargetArch = targetArch
+    }
+
+    public var dyldSharedCacheURLForSelectedTargetArch: URL {
+        classDumpDyldManager.dyldSharedCachePath(for: selectedTargetArch).filePathURL
+    }
 }
