@@ -98,11 +98,14 @@ class ClassDumpOperationCellView: TableCellView {
 
     let openInHopperDisassemblerOperationButton: NSButton = .init()
 
+    let openInIDAOperationButton: NSButton = .init()
+    
     let dumpOperationButton: NSButton = .init()
     
     lazy var contentStackView = HStackView(spacing: 10) {
         showInFinderOperationButton
         openInHopperDisassemblerOperationButton
+        openInIDAOperationButton
         dumpOperationButton
             .size(width: 20, height: 20)
     }
@@ -113,6 +116,8 @@ class ClassDumpOperationCellView: TableCellView {
         showInFinderOperationButton.isBordered = false
         openInHopperDisassemblerOperationButton.image = .hopperAppIcon(forSize: 20)
         openInHopperDisassemblerOperationButton.isBordered = false
+        openInIDAOperationButton.image = .idaAppIcon(forSize: 20)
+        openInIDAOperationButton.isBordered = false
         dumpOperationButton.image = IDEIcon("C", size: 18).image
         dumpOperationButton.isBordered = false
         
@@ -141,6 +146,10 @@ extension NSImage {
     
     static func hopperAppIcon(forSize size: CGSize) -> NSImage? {
         "HopperDisassemblerAppIcon".image?.box.toSize(size)
+    }
+    
+    static func idaAppIcon(forSize size: CGSize) -> NSImage? {
+        "IDAProAppIcon".image?.box.toSize(size)
     }
 }
 

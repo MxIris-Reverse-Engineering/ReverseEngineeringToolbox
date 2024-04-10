@@ -29,7 +29,7 @@ let package = Package(
         .package(url: "https://github.com/j-f1/MenuBuilder.git", branch: "main"),
         .package(url: "https://github.com/zenangst/Apps.git", branch: "main"),
         .package(url: "https://github.com/leptos-null/ClassDumpRuntime.git", branch: "master"),
-//        .package(path: "/Volumes/Repositories/Private/Fork/Library/ClassDumpRuntime"),
+        .package(url: "https://github.com/Zollerboy1/SwiftCommand", branch: "main"),
     ],
     targets: [
         .target(
@@ -68,7 +68,10 @@ let package = Package(
             ]
         ),
         .target(
-            name: "ApplicationLaunchers"
+            name: "ApplicationLaunchers",
+            dependencies: [
+                .product(name: "SwiftCommand", package: "SwiftCommand")
+            ]
         ),
         .target(
             name: "SimulatorManager",

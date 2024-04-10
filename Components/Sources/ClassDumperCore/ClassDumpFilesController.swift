@@ -124,21 +124,26 @@ extension URL {
         guard let contentType = try? resourceValues(forKeys: [.contentTypeKey]).contentType else { return nil }
         switch contentType {
         case .framework:
-            for childrenURL in box.enumerator(options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants, .skipsPackageDescendants]) {
-                if let fileWrapper = try? FileWrapper(url: childrenURL) {
-                    if fileWrapper.isSymbolicLink, let symbolicLinkDestinationURL = fileWrapper.symbolicLinkDestinationURL {
-                        let symbolicLinkDestinationFullURL = appendingPathComponent(symbolicLinkDestinationURL.path)
-                        if let contentType = try? symbolicLinkDestinationFullURL.resourceValues(forKeys: [.contentTypeKey]).contentType {
-                            if contentType == .unixExecutable {
-                                return .init(url: self, executableURL: symbolicLinkDestinationFullURL, type: .framework)
-                            }
-                        }
-                    }
-                }
-                if let contentType = try? childrenURL.resourceValues(forKeys: [.contentTypeKey]).contentType, contentType == .unixExecutable {
-                    return .init(url: self, executableURL: childrenURL, type: .framework)
-                }
+            
+            if let framework = Bundle(url: self), let executableURL = framework.executableURL {
+                return .init(url: self, executableURL: executableURL, type: .framework)
             }
+            
+//            for childrenURL in box.enumerator(options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants, .skipsPackageDescendants]) {
+//                if let fileWrapper = try? FileWrapper(url: childrenURL) {
+//                    if fileWrapper.isSymbolicLink, let symbolicLinkDestinationURL = fileWrapper.symbolicLinkDestinationURL {
+//                        let symbolicLinkDestinationFullURL = appendingPathComponent(symbolicLinkDestinationURL.path)
+//                        if let contentType = try? symbolicLinkDestinationFullURL.resourceValues(forKeys: [.contentTypeKey]).contentType {
+//                            if contentType == .unixExecutable {
+//                                return .init(url: self, executableURL: symbolicLinkDestinationFullURL, type: .framework)
+//                            }
+//                        }
+//                    }
+//                }
+//                if let contentType = try? childrenURL.resourceValues(forKeys: [.contentTypeKey]).contentType, contentType == .unixExecutable {
+//                    return .init(url: self, executableURL: childrenURL, type: .framework)
+//                }
+//            }
         case .unixExecutable:
             return .init(url: self, executableURL: self, type: .executable)
         case .dylib:
