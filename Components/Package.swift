@@ -67,6 +67,8 @@ let package = Package(
                 .process("Resources")
             ]
         ),
+        .target(name: "UtilitiesCore"),
+        .target(name: "UtilitiesUI"),
         .target(
             name: "ApplicationLaunchers",
             dependencies: [

@@ -5,8 +5,7 @@ import ClassDumperCore
 import ApplicationLaunchers
 import FZUIKit
 import AdvancedCollectionTableView
-
-
+import MenuBuilder
 
 class ClassDumpFilesTableViewAdapter {
     private unowned let tableView: NSTableView

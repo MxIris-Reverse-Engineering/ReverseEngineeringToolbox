@@ -1,10 +1,3 @@
-//
-//  ClassDumpApplicationsViewController.swift
-//
-//
-//  Created by JH on 2024/3/29.
-//
-
 import AppKit
 import UIFoundation
 import ClassDumperCore

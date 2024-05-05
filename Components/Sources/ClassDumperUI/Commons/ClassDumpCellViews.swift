@@ -35,25 +35,25 @@ extension ClassDumpableApplication: ClassDumpNameCellView.Configurable {
     var filename: String { displayName }
     
 //    @AssociatedObject(.retain(.nonatomic))
-    var _iconCache: NSImage? {
-        set {
-            setAssociatedValue(newValue, key: #function, object: self)
-        }
-        get {
-            getAssociatedValue(#function, object: self)
-        }
-    }
-    
-    
-    var icon: NSImage? {
-        if let iconCache = _iconCache {
-            return iconCache
-        } else {
-            let icon = NSWorkspace.shared.icon(forFile: url.path)
-            _iconCache = icon
-            return icon
-        }
-    }
+//    var _iconCache: NSImage? {
+//        set {
+//            setAssociatedValue(newValue, key: #function, object: self)
+//        }
+//        get {
+//            getAssociatedValue(#function, object: self)
+//        }
+//    }
+//    
+//    
+//    var icon: NSImage? {
+//        if let iconCache = _iconCache {
+//            return iconCache
+//        } else {
+//            let icon = NSWorkspace.shared.icon(forFile: url.path)
+//            _iconCache = icon
+//            return icon
+//        }
+//    }
 }
 
 extension ClassDumpableApplication.FrameworkDirectory: ClassDumpNameCellView.Configurable {

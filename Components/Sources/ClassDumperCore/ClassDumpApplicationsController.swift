@@ -2,6 +2,7 @@ import Foundation
 import Combine
 import FoundationToolbox
 import Apps
+import AppKit
 
 public class ClassDumpableApplication: Hashable, Identifiable {
     public struct FrameworkDirectory: Hashable {
@@ -13,7 +14,8 @@ public class ClassDumpableApplication: Hashable, Identifiable {
     public let bundleIdentifier: String
     public let executable: ClassDumpableFile
     public let frameworkDirectories: [FrameworkDirectory]
-
+    public let icon: NSImage?
+    
     public func hash(into hasher: inout Hasher) {
         hasher.combine(url)
     }
@@ -27,6 +29,7 @@ public class ClassDumpableApplication: Hashable, Identifiable {
         self.bundleIdentifier = bundleIdentifier
         self.executable = executable
         self.frameworkDirectories = frameworkDirectories
+        self.icon = NSWorkspace.shared.icon(forFile: url.path)
     }
 
     public var displayName: String { FileManager.default.displayName(atPath: url.path) }

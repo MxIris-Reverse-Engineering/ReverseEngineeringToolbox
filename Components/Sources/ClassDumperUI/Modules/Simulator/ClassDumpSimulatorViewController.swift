@@ -12,6 +12,7 @@ import SimulatorManager
 import AdvancedCollectionTableView
 import FZUIKit
 import ApplicationLaunchers
+import MenuBuilder
 
 class ClassDumpSimulatorRuntimeTableView: NSTableView {}
 class ClassDumpSimulatorPathTableView: NSTableView {}

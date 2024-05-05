@@ -15,6 +15,12 @@ public struct FinderLauncher {
     }
 
     public func run() {
-        NSWorkspace.shared.activateFileViewerSelecting([url])
+        let pasteboard = NSPasteboard.withUniqueName()
+        pasteboard.clearContents()
+        let urls = [url as NSURL]
+        pasteboard.writeObjects(urls)
+        NSPerformService("Finder/Reveal", pasteboard)
+        pasteboard.releaseGlobally()
+//        NSWorkspace.shared.activateFileViewerSelecting([url])
     }
 }

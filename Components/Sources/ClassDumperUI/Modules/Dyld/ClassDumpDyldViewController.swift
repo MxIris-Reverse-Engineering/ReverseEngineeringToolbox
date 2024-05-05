@@ -6,6 +6,7 @@ import ClassDumperCore
 import AdvancedCollectionTableView
 import FZUIKit
 import ApplicationLaunchers
+import MenuBuilder
 
 public final class ClassDumpDyldViewController: ModuleXibViewController {
     private typealias DataSource = TableViewDiffableDataSource<TableViewSection, ClassDumpableImage>
@@ -21,9 +22,9 @@ public final class ClassDumpDyldViewController: ModuleXibViewController {
     @IBOutlet var imagesTableView: NSTableView!
 
     @IBOutlet var showInFinderButton: NSButton!
-    
+
     @IBOutlet var openInHopperButton: NSButton!
-    
+
     private let classDumpDyldController = ClassDumpDyldController()
 
     private lazy var imagesTableViewDataSource: DataSource = {
@@ -34,7 +35,7 @@ public final class ClassDumpDyldViewController: ModuleXibViewController {
         }
         return DataSource(tableView: imagesTableView, cellRegistration: cellRegistration)
     }()
-    
+
     public override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -43,7 +44,7 @@ public final class ClassDumpDyldViewController: ModuleXibViewController {
         classDumpDyldController.delegate = self
         showInFinderButton.image = .finderAppIcon(forSize: 20)
         openInHopperButton.image = .hopperAppIcon(forSize: 20)
-        
+
         imagesTableView.do {
             $0.dataSource = imagesTableViewDataSource
             $0.menu = NSMenu {
@@ -65,17 +66,17 @@ public final class ClassDumpDyldViewController: ModuleXibViewController {
         guard let targetArch = ClassDumpDyldArch(rawValue: sender.tag) else { return }
         classDumpDyldController.selectTargetArch(targetArch)
     }
-    
+
     @IBAction func showInFinderButtonAction(_ sender: NSButton) {
         FinderLauncher(url: classDumpDyldController.dyldSharedCacheURLForSelectedTargetArch).run()
     }
-    
+
     @IBAction func openInHopperButtonAction(_ sender: NSButton) {
         HopperDisassemblerLauncher(executableURL: classDumpDyldController.dyldSharedCacheURLForSelectedTargetArch).run { result in
             switch result {
             case .success:
                 break
-            case .failure(let failure):
+            case let .failure(failure):
                 NSAlert(error: failure).runModal()
             }
         }

@@ -36,6 +36,7 @@
 		E984AB5B2B98B29A002B59F5 /* MainSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
 		E9B70DFF2BA7166300B0E4FF /* MainSidebarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSidebarViewController.swift; sourceTree = "<group>"; };
 		E9B70E012BA717B700B0E4FF /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
+		E9F5A5172BD2B9BB00B6732E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +78,7 @@
 		E984AB3A2B960ACB002B59F5 /* ReverseEngineeringToolbox */ = {
 			isa = PBXGroup;
 			children = (
+				E9F5A5172BD2B9BB00B6732E /* Info.plist */,
 				E984AB3B2B960ACB002B59F5 /* AppDelegate.swift */,
 				E9B70E012BA717B700B0E4FF /* Module.swift */,
 				E984AB592B98B247002B59F5 /* MainWindowController.swift */,
@@ -331,6 +333,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ReverseEngineeringToolbox/Info.plist;
 				INFOPLIST_KEY_NSAppleEventsUsageDescription = "Allow authorization to launch other apps";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
@@ -339,6 +342,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.JH.ReverseEngineeringToolbox;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -357,6 +361,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ReverseEngineeringToolbox/Info.plist;
 				INFOPLIST_KEY_NSAppleEventsUsageDescription = "Allow authorization to launch other apps";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
@@ -365,6 +370,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.JH.ReverseEngineeringToolbox;
 				PRODUCT_NAME = "$(TARGET_NAME)";

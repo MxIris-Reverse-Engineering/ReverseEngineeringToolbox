@@ -7,11 +7,18 @@
 
 import Cocoa
 import UIFoundation
+import ClassDumperCore
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
     lazy var mainWindowController = MainWindowController()
 
+    override init() {
+        super.init()
+        NSApplication.shared.servicesProvider = ClassDumpService.shared
+        NSUpdateDynamicServices()
+    }
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         mainWindowController.showWindow(nil)
     }
@@ -22,5 +29,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
         return true
+    }
+    
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if flag { return false }
+        mainWindowController.showWindow(nil)
+        return false
     }
 }

@@ -3,6 +3,7 @@
 import AppKit
 import ClassDumperCore
 import FZUIKit
+import MenuBuilder
 
 class ClassDumpApplicationsOutlineViewAdapter: NSObject {
     private unowned let outlineView: ClassDumpApplicationsOutlineView
