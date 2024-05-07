@@ -15,7 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     override init() {
         super.init()
-        NSApplication.shared.servicesProvider = ClassDumpService.shared
+        NSApplication.shared.servicesProvider = ServicesProvider.shared
         NSUpdateDynamicServices()
     }
     

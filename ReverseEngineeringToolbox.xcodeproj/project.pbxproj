@@ -19,6 +19,10 @@
 		E984AB582B98B20C002B59F5 /* UIFoundationToolbox in Frameworks */ = {isa = PBXBuildFile; productRef = E984AB572B98B20C002B59F5 /* UIFoundationToolbox */; };
 		E984AB5A2B98B247002B59F5 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E984AB592B98B247002B59F5 /* MainWindowController.swift */; };
 		E984AB5C2B98B29A002B59F5 /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E984AB5B2B98B29A002B59F5 /* MainSplitViewController.swift */; };
+		E99652A42BE9176100D89A55 /* ServicesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99652A32BE9176000D89A55 /* ServicesProvider.swift */; };
+		E99652A62BE9186D00D89A55 /* ApplicationLaunchers in Frameworks */ = {isa = PBXBuildFile; productRef = E99652A52BE9186D00D89A55 /* ApplicationLaunchers */; };
+		E99652A92BE941F900D89A55 /* StatusItemController in Frameworks */ = {isa = PBXBuildFile; productRef = E99652A82BE941F900D89A55 /* StatusItemController */; };
+		E99652AB2BE9420D00D89A55 /* MainStatusItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99652AA2BE9420D00D89A55 /* MainStatusItemController.swift */; };
 		E9A3A6452BAC8B1E007B4C18 /* AdvancedCollectionTableView in Frameworks */ = {isa = PBXBuildFile; productRef = E9A3A6442BAC8B1E007B4C18 /* AdvancedCollectionTableView */; };
 		E9B70E002BA7166300B0E4FF /* MainSidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B70DFF2BA7166300B0E4FF /* MainSidebarViewController.swift */; };
 		E9B70E022BA717B700B0E4FF /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B70E012BA717B700B0E4FF /* Module.swift */; };
@@ -34,6 +38,8 @@
 		E984AB4A2B960BB3002B59F5 /* Components */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Components; sourceTree = "<group>"; };
 		E984AB592B98B247002B59F5 /* MainWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
 		E984AB5B2B98B29A002B59F5 /* MainSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
+		E99652A32BE9176000D89A55 /* ServicesProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesProvider.swift; sourceTree = "<group>"; };
+		E99652AA2BE9420D00D89A55 /* MainStatusItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainStatusItemController.swift; sourceTree = "<group>"; };
 		E9B70DFF2BA7166300B0E4FF /* MainSidebarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSidebarViewController.swift; sourceTree = "<group>"; };
 		E9B70E012BA717B700B0E4FF /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
 		E9F5A5172BD2B9BB00B6732E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -49,6 +55,8 @@
 				E984AB4D2B98B1BE002B59F5 /* ClassDumperUI in Frameworks */,
 				E9A3A6452BAC8B1E007B4C18 /* AdvancedCollectionTableView in Frameworks */,
 				E984AB4F2B98B1C4002B59F5 /* ClassDumperCore in Frameworks */,
+				E99652A92BE941F900D89A55 /* StatusItemController in Frameworks */,
+				E99652A62BE9186D00D89A55 /* ApplicationLaunchers in Frameworks */,
 				E984AB562B98B20C002B59F5 /* UIFoundationAppleInternalObjC in Frameworks */,
 				E984AB582B98B20C002B59F5 /* UIFoundationToolbox in Frameworks */,
 			);
@@ -81,9 +89,11 @@
 				E9F5A5172BD2B9BB00B6732E /* Info.plist */,
 				E984AB3B2B960ACB002B59F5 /* AppDelegate.swift */,
 				E9B70E012BA717B700B0E4FF /* Module.swift */,
+				E99652A32BE9176000D89A55 /* ServicesProvider.swift */,
 				E984AB592B98B247002B59F5 /* MainWindowController.swift */,
 				E9B70DFF2BA7166300B0E4FF /* MainSidebarViewController.swift */,
 				E984AB5B2B98B29A002B59F5 /* MainSplitViewController.swift */,
+				E99652AA2BE9420D00D89A55 /* MainStatusItemController.swift */,
 				E984AB3D2B960ACB002B59F5 /* ViewController.swift */,
 				E984AB3F2B960ACC002B59F5 /* Assets.xcassets */,
 				E984AB412B960ACC002B59F5 /* Main.storyboard */,
@@ -123,6 +133,8 @@
 				E984AB552B98B20C002B59F5 /* UIFoundationAppleInternalObjC */,
 				E984AB572B98B20C002B59F5 /* UIFoundationToolbox */,
 				E9A3A6442BAC8B1E007B4C18 /* AdvancedCollectionTableView */,
+				E99652A52BE9186D00D89A55 /* ApplicationLaunchers */,
+				E99652A82BE941F900D89A55 /* StatusItemController */,
 			);
 			productName = ReverseEngineeringToolbox;
 			productReference = E984AB382B960ACB002B59F5 /* ReverseEngineeringToolbox.app */;
@@ -155,6 +167,7 @@
 			packageReferences = (
 				E984AB502B98B20C002B59F5 /* XCRemoteSwiftPackageReference "UIFoundation" */,
 				E9A3A6432BAC8B1E007B4C18 /* XCRemoteSwiftPackageReference "AdvancedCollectionTableView" */,
+				E99652A72BE941F900D89A55 /* XCRemoteSwiftPackageReference "StatusItemController" */,
 			);
 			productRefGroup = E984AB392B960ACB002B59F5 /* Products */;
 			projectDirPath = "";
@@ -186,6 +199,8 @@
 				E984AB3E2B960ACB002B59F5 /* ViewController.swift in Sources */,
 				E984AB3C2B960ACB002B59F5 /* AppDelegate.swift in Sources */,
 				E9B70E002BA7166300B0E4FF /* MainSidebarViewController.swift in Sources */,
+				E99652A42BE9176100D89A55 /* ServicesProvider.swift in Sources */,
+				E99652AB2BE9420D00D89A55 /* MainStatusItemController.swift in Sources */,
 				E984AB5A2B98B247002B59F5 /* MainWindowController.swift in Sources */,
 				E9B70E022BA717B700B0E4FF /* Module.swift in Sources */,
 			);
@@ -411,6 +426,14 @@
 				kind = branch;
 			};
 		};
+		E99652A72BE941F900D89A55 /* XCRemoteSwiftPackageReference "StatusItemController" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hexedbits/StatusItemController";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.1;
+			};
+		};
 		E9A3A6432BAC8B1E007B4C18 /* XCRemoteSwiftPackageReference "AdvancedCollectionTableView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/flocked/AdvancedCollectionTableView";
@@ -449,6 +472,15 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E984AB502B98B20C002B59F5 /* XCRemoteSwiftPackageReference "UIFoundation" */;
 			productName = UIFoundationToolbox;
+		};
+		E99652A52BE9186D00D89A55 /* ApplicationLaunchers */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ApplicationLaunchers;
+		};
+		E99652A82BE941F900D89A55 /* StatusItemController */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E99652A72BE941F900D89A55 /* XCRemoteSwiftPackageReference "StatusItemController" */;
+			productName = StatusItemController;
 		};
 		E9A3A6442BAC8B1E007B4C18 /* AdvancedCollectionTableView */ = {
 			isa = XCSwiftPackageProductDependency;

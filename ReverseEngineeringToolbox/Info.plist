@@ -5,18 +5,54 @@
 	<key>NSServices</key>
 	<array>
 		<dict>
+			<key>NSRequiredContext</key>
+			<dict/>
 			<key>NSSendFileTypes</key>
 			<array>
 				<string>public.unix-executable</string>
+				<string>com.apple.mach-o-dylib</string>
+				<string>com.apple.framework</string>
 			</array>
-			<key>NSRequiredContext</key>
-			<dict/>
 			<key>NSMessage</key>
 			<string>performClassDumpFromService</string>
 			<key>NSMenuItem</key>
 			<dict>
 				<key>default</key>
 				<string>ClassDump with ReverseEngineeringToolbox</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>NSSendFileTypes</key>
+			<array>
+				<string>public.unix-executable</string>
+				<string>com.apple.mach-o-dylib</string>
+				<string>com.apple.framework</string>
+			</array>
+			<key>NSRequiredContext</key>
+			<dict/>
+			<key>NSMessage</key>
+			<string>performOpenInIDAFromService</string>
+			<key>NSMenuItem</key>
+			<dict>
+				<key>default</key>
+				<string>Open in IDA</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>NSRequiredContext</key>
+			<dict/>
+			<key>NSSendFileTypes</key>
+			<array>
+				<string>public.unix-executable</string>
+				<string>com.apple.mach-o-dylib</string>
+				<string>com.apple.framework</string>
+			</array>
+			<key>NSMessage</key>
+			<string>performOpenInHopperFromService</string>
+			<key>NSMenuItem</key>
+			<dict>
+				<key>default</key>
+				<string>Open in Hopper</string>
 			</dict>
 		</dict>
 	</array>

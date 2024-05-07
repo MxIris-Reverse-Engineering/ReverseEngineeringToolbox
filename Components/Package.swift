@@ -15,6 +15,10 @@ let package = Package(
             name: "ClassDumperUI",
             targets: ["ClassDumperUI"]
         ),
+        .library(
+            name: "ApplicationLaunchers",
+            targets: ["ApplicationLaunchers"]
+        )
     ],
     dependencies: [
         .package(url: "https://github.com/sindresorhus/ExceptionCatcher.git", .upToNextMajor(from: "2.0.0")),
