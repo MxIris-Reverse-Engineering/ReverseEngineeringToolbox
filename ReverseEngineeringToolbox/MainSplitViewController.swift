@@ -13,10 +13,10 @@ class MainSplitViewController: NSSplitViewController {
     let classDumpViewController = ClassDumpViewController()
     let sidebarViewController = MainSidebarViewController()
     let tabViewController = NSTabViewController()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         sidebarViewController.delegate = self
         tabViewController.tabStyle = .unspecified
         addSplitViewItem(NSSplitViewItem(sidebarWithViewController: sidebarViewController))

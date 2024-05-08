@@ -9,9 +9,9 @@ import AppKit
 
 enum Module: Int, CaseIterable, Hashable, Identifiable {
     case classDump
-    
+
     var id: Self { self }
-    
+
     var title: String {
         switch self {
         case .classDump:

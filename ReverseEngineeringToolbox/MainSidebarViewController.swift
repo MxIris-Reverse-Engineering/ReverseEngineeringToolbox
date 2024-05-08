@@ -17,7 +17,7 @@ protocol MainSidebarViewControllerDelegate: AnyObject {
 
 class MainSidebarViewController: XiblessViewController<NSView> {
     private typealias DataSource = TableViewDiffableDataSource<Section, Module>
-    
+
     public weak var delegate: MainSidebarViewControllerDelegate?
 
     private let (scrollView, tableView): (ScrollView, SingleColumnTableView) = SingleColumnTableView.scrollableTableView()

@@ -18,7 +18,7 @@ let package = Package(
         .library(
             name: "ApplicationLaunchers",
             targets: ["ApplicationLaunchers"]
-        )
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/sindresorhus/ExceptionCatcher.git", .upToNextMajor(from: "2.0.0")),
@@ -46,10 +46,10 @@ let package = Package(
                 .product(name: "ExceptionCatcher", package: "ExceptionCatcher"),
                 .product(name: "FrameworkToolbox", package: "FrameworkToolbox"),
                 .product(name: "FoundationToolbox", package: "FrameworkToolbox"),
-                .product(name: "Apps", package: "Apps")
+                .product(name: "Apps", package: "Apps"),
             ],
             swiftSettings: [
-                .enableExperimentalFeature("AccessLevelOnImport")
+                .enableExperimentalFeature("AccessLevelOnImport"),
             ]
         ),
         .target(
@@ -68,15 +68,27 @@ let package = Package(
                 .product(name: "MenuBuilder", package: "MenuBuilder"),
             ],
             resources: [
-                .process("Resources")
+                .process("Resources"),
             ]
         ),
         .target(name: "UtilitiesCore"),
-        .target(name: "UtilitiesUI"),
+        .target(
+            name: "UtilitiesUI",
+            dependencies: [
+                "UtilitiesCore",
+                .product(name: "FrameworkToolbox", package: "FrameworkToolbox"),
+                .product(name: "FoundationToolbox", package: "FrameworkToolbox"),
+                .product(name: "UIFoundation", package: "UIFoundation"),
+                .product(name: "UIFoundationToolbox", package: "UIFoundation"),
+            ],
+            resources: [
+                .process("Resources"),
+            ]
+        ),
         .target(
             name: "ApplicationLaunchers",
             dependencies: [
-                .product(name: "SwiftCommand", package: "SwiftCommand")
+                .product(name: "SwiftCommand", package: "SwiftCommand"),
             ]
         ),
         .target(
@@ -89,8 +101,8 @@ let package = Package(
         .testTarget(
             name: "SimulatorManagerTests",
             dependencies: [
-                "SimulatorManager"
+                "SimulatorManager",
             ]
-        )
+        ),
     ]
 )

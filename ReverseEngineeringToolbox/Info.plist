@@ -5,14 +5,14 @@
 	<key>NSServices</key>
 	<array>
 		<dict>
-			<key>NSRequiredContext</key>
-			<dict/>
 			<key>NSSendFileTypes</key>
 			<array>
 				<string>public.unix-executable</string>
 				<string>com.apple.mach-o-dylib</string>
 				<string>com.apple.framework</string>
 			</array>
+			<key>NSRequiredContext</key>
+			<dict/>
 			<key>NSMessage</key>
 			<string>performClassDumpFromService</string>
 			<key>NSMenuItem</key>
@@ -24,6 +24,7 @@
 		<dict>
 			<key>NSSendFileTypes</key>
 			<array>
+				<string>com.apple.application</string>
 				<string>public.unix-executable</string>
 				<string>com.apple.mach-o-dylib</string>
 				<string>com.apple.framework</string>
@@ -39,14 +40,15 @@
 			</dict>
 		</dict>
 		<dict>
-			<key>NSRequiredContext</key>
-			<dict/>
 			<key>NSSendFileTypes</key>
 			<array>
+				<string>com.apple.application</string>
 				<string>public.unix-executable</string>
 				<string>com.apple.mach-o-dylib</string>
 				<string>com.apple.framework</string>
 			</array>
+			<key>NSRequiredContext</key>
+			<dict/>
 			<key>NSMessage</key>
 			<string>performOpenInHopperFromService</string>
 			<key>NSMenuItem</key>
