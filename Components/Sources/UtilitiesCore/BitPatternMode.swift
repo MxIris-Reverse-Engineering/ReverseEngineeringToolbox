@@ -52,26 +52,6 @@ extension BitPatternMode<String> {
         return Float16(bitPattern: bitPattern)
     }
 
-    public var decimalStringToDouble: Double? {
-        guard let bitPattern = UInt64(base, radix: 10) else { return nil }
-        return Double(bitPattern: bitPattern)
-    }
-
-    public var decimalStringToCGFloat: CGFloat? {
-        guard let bitPattern = UInt(base, radix: 10) else { return nil }
-        return CGFloat(bitPattern: bitPattern)
-    }
-
-    public var decimalStringToFloat: Float? {
-        guard let bitPattern = UInt32(base, radix: 10) else { return nil }
-        return Float(bitPattern: bitPattern)
-    }
-
-    public var decimalStringToFloat16: Float16? {
-        guard let bitPattern = UInt16(base, radix: 10) else { return nil }
-        return Float16(bitPattern: bitPattern)
-    }
-
     public var hexStringToDouble: Double? {
         guard let bitPattern = UInt64(base, radix: 16) else { return nil }
         return Double(bitPattern: bitPattern)

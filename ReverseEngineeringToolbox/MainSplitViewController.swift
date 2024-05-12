@@ -8,12 +8,13 @@
 import AppKit
 import UIFoundation
 import ClassDumperUI
+import UtilitiesUI
 
 class MainSplitViewController: NSSplitViewController {
-    let classDumpViewController = ClassDumpViewController()
     let sidebarViewController = MainSidebarViewController()
     let tabViewController = NSTabViewController()
-
+    let classDumpViewController = ClassDumpViewController()
+    let utilitesViewController = UtilitiesViewController()
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -22,6 +23,7 @@ class MainSplitViewController: NSSplitViewController {
         addSplitViewItem(NSSplitViewItem(sidebarWithViewController: sidebarViewController))
         addSplitViewItem(NSSplitViewItem(contentListWithViewController: tabViewController))
         tabViewController.addTabViewItem(NSTabViewItem(viewController: classDumpViewController))
+        tabViewController.addTabViewItem(NSTabViewItem(viewController: utilitesViewController))
     }
 }
 

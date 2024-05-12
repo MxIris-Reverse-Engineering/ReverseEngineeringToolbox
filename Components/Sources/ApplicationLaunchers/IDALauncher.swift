@@ -3,10 +3,10 @@
 import AppKit
 import SwiftCommand
 
-class IDALauncherSupportManager {
-    static let shared = IDALauncherSupportManager()
+private class IDALauncherSupportManager {
+    public static let shared = IDALauncherSupportManager()
 
-    static var idaLauncherSupportDirectoryURL: URL? {
+    private static var idaLauncherSupportDirectoryURL: URL? {
         guard let applicationSupportDirectory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else { return nil }
         guard let bundleIdentifier = Bundle.main.bundleIdentifier else { return nil }
         let currentApplicationSupportDirectory = applicationSupportDirectory.appendingPathComponent(bundleIdentifier)
@@ -28,16 +28,54 @@ class IDALauncherSupportManager {
         self.supportDirectoryURL = idaLauncherSupportDirectory
     }
 
-    func targetItem(at url: URL) -> URL {
+    public func targetItem(at url: URL) -> URL {
         supportDirectoryURL.appendingPathComponent(url.lastPathComponent)
     }
-    
-    func copyItemToSupport(at url: URL) throws {
-        try FileManager.default.copyItem(at: url.resolvingSymlinksInPath(), to: targetItem(at: url))
+
+    public func copyItemToSupport(at url: URL) throws {
+        let sourceURL = url.resolvingSymlinksInPath()
+        if isDyldSharedCacheFile(at: sourceURL) {
+            for dyldSharedCacheURL in dyldSharedCacheURLs(for: sourceURL) {
+                try FileManager.default.copyItem(at: dyldSharedCacheURL, to: targetItem(at: dyldSharedCacheURL))
+            }
+
+        } else {
+            try FileManager.default.copyItem(at: sourceURL, to: targetItem(at: url))
+        }
     }
 
-    func removeItemFromSupport(at url: URL) throws {
+    public func removeItemFromSupport(at url: URL) throws {
+        if isDyldSharedCacheFile(at: url) {
+            for dyldSharedCacheURL in dyldSharedCacheURLs(for: url) {
+                try FileManager.default.removeItem(at: targetItem(at: dyldSharedCacheURL))
+            }
+        }
         try FileManager.default.removeItem(at: targetItem(at: url))
+    }
+
+    // MARK: - Dyld shared cache supports
+
+    private let dyldSharedCacheSuffixFormatter: NumberFormatter = {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.minimumIntegerDigits = 2
+        return numberFormatter
+    }()
+
+    private func isDyldSharedCacheFile(at url: URL) -> Bool {
+        url.lastPathComponent.hasPrefix("dyld_shared_cache")
+    }
+
+    private func dyldSharedCacheURLs(for sourceURL: URL) -> [URL] {
+        var dyldSharedCacheURLs: [URL] = [sourceURL]
+        var currentIndex = 1
+        var nextSourceURL: URL? = dyldSharedCacheSuffixFormatter.string(for: currentIndex).map { sourceURL.appendingPathExtension($0) }
+
+        while let dyldSharedCacheURL = nextSourceURL, FileManager.default.fileExists(atPath: dyldSharedCacheURL.path) {
+            dyldSharedCacheURLs.append(dyldSharedCacheURL)
+            currentIndex += 1
+            nextSourceURL = dyldSharedCacheSuffixFormatter.string(for: currentIndex).map { sourceURL.appendingPathExtension($0) }
+        }
+        return dyldSharedCacheURLs
     }
 }
 
@@ -89,11 +127,13 @@ public struct IDALauncher {
         }
         DispatchQueue.global().async {
             do {
-                if isCopyToTemp {
+                var isCopied = false
+                if isCopyToTemp, !FileManager.default.isWritableFile(atPath: executableURL.path) {
                     try supportManager.copyItemToSupport(at: executableURL)
+                    isCopied = true
                 }
                 let process = Process()
-                process.arguments = [supportManager.targetItem(at: executableURL).path]
+                process.arguments = [isCopied ? supportManager.targetItem(at: executableURL).path : executableURL.path]
                 process.executableURL = idaExecutableURL
                 process.environment = [
                     "__CFBundleIdentifier": "com.apple.Terminal",
@@ -102,10 +142,12 @@ public struct IDALauncher {
                 let errorPipe = Pipe()
                 process.standardError = errorPipe
                 process.terminationHandler = { _ in
-                    do {
-                        try supportManager.removeItemFromSupport(at: executableURL)
-                    } catch {
-                        print(error)
+                    if isCopied {
+                        do {
+                            try supportManager.removeItemFromSupport(at: executableURL)
+                        } catch {
+                            print(error)
+                        }
                     }
                 }
                 try process.run()

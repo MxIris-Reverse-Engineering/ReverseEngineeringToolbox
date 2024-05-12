@@ -10,6 +10,7 @@
             <connections>
                 <outlet property="imagesTableView" destination="c6B-Gv-4Vz" id="upZ-Ue-ika"/>
                 <outlet property="openInHopperButton" destination="BnF-OX-NU4" id="o5C-bS-WBo"/>
+                <outlet property="openInIDAButton" destination="Uxe-Aj-SRf" id="94v-4o-pwb"/>
                 <outlet property="performDumpAllImageButton" destination="ylj-KK-9ib" id="3wG-0t-hRF"/>
                 <outlet property="searchImagesButton" destination="dBj-sB-1Iu" id="buO-X1-DvA"/>
                 <outlet property="showInFinderButton" destination="Qrz-08-qt5" id="a8P-qx-jHo"/>
@@ -108,7 +109,7 @@
                                 </customSpacing>
                             </stackView>
                             <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="15" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1VE-oQ-hAI">
-                                <rect key="frame" x="492" y="15" width="55" height="20"/>
+                                <rect key="frame" x="492" y="15" width="90" height="20"/>
                                 <subviews>
                                     <button translatesAutoresizingMaskIntoConstraints="NO" id="Qrz-08-qt5">
                                         <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -138,12 +139,28 @@
                                             <action selector="openInHopperButtonAction:" target="-2" id="Zwx-Rw-Y6P"/>
                                         </connections>
                                     </button>
+                                    <button translatesAutoresizingMaskIntoConstraints="NO" id="Uxe-Aj-SRf">
+                                        <rect key="frame" x="70" y="0.0" width="20" height="20"/>
+                                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="IDAProAppIcon" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="GIQ-bq-jZQ">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="HjJ-0x-gjW"/>
+                                            <constraint firstAttribute="width" constant="20" id="ayC-fZ-oOQ"/>
+                                        </constraints>
+                                        <connections>
+                                            <action selector="openInIDAButtonAction:" target="-2" id="l1l-l7-Ebv"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <visibilityPriorities>
                                     <integer value="1000"/>
                                     <integer value="1000"/>
+                                    <integer value="1000"/>
                                 </visibilityPriorities>
                                 <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                 </customSpacing>
@@ -242,5 +259,6 @@
     <resources>
         <image name="FinderAppIcon" width="512" height="512"/>
         <image name="HopperDisassemblerAppIcon" width="512" height="512"/>
+        <image name="IDAProAppIcon" width="64" height="64"/>
     </resources>
 </document>

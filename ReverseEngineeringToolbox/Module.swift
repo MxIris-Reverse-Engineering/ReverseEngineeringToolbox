@@ -9,6 +9,7 @@ import AppKit
 
 enum Module: Int, CaseIterable, Hashable, Identifiable {
     case classDump
+    case utilities
 
     var id: Self { self }
 
@@ -16,6 +17,8 @@ enum Module: Int, CaseIterable, Hashable, Identifiable {
         switch self {
         case .classDump:
             return "ClassDump"
+        case .utilities:
+            return "Utilities"
         }
     }
 }

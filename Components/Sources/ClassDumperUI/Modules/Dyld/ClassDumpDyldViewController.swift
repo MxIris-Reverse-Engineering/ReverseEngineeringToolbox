@@ -25,6 +25,8 @@ public final class ClassDumpDyldViewController: ModuleXibViewController {
 
     @IBOutlet var openInHopperButton: NSButton!
 
+    @IBOutlet var openInIDAButton: NSButton!
+
     private let classDumpDyldController = ClassDumpDyldController()
 
     private lazy var imagesTableViewDataSource: DataSource = {
@@ -44,7 +46,8 @@ public final class ClassDumpDyldViewController: ModuleXibViewController {
         classDumpDyldController.delegate = self
         showInFinderButton.image = .finderAppIcon(forSize: 20)
         openInHopperButton.image = .hopperAppIcon(forSize: 20)
-
+        openInIDAButton.image = .idaAppIcon(forSize: 20)
+        
         imagesTableView.do {
             $0.dataSource = imagesTableViewDataSource
             $0.menu = NSMenu {
@@ -73,6 +76,17 @@ public final class ClassDumpDyldViewController: ModuleXibViewController {
 
     @IBAction func openInHopperButtonAction(_ sender: NSButton) {
         HopperDisassemblerLauncher(executableURL: classDumpDyldController.dyldSharedCacheURLForSelectedTargetArch).run { result in
+            switch result {
+            case .success:
+                break
+            case let .failure(failure):
+                NSAlert(error: failure).runModal()
+            }
+        }
+    }
+    
+    @IBAction func openInIDAButtonAction(_ sender: NSButton) {
+        IDALauncher(executableURL: classDumpDyldController.dyldSharedCacheURLForSelectedTargetArch).run { result in
             switch result {
             case .success:
                 break

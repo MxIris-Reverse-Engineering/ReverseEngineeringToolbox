@@ -19,6 +19,10 @@ let package = Package(
             name: "ApplicationLaunchers",
             targets: ["ApplicationLaunchers"]
         ),
+        .library(
+            name: "UtilitiesUI",
+            targets: ["UtilitiesUI"]
+        )
     ],
     dependencies: [
         .package(url: "https://github.com/sindresorhus/ExceptionCatcher.git", .upToNextMajor(from: "2.0.0")),
@@ -34,6 +38,7 @@ let package = Package(
         .package(url: "https://github.com/zenangst/Apps.git", branch: "main"),
         .package(url: "https://github.com/leptos-null/ClassDumpRuntime.git", branch: "master"),
         .package(url: "https://github.com/Zollerboy1/SwiftCommand", branch: "main"),
+        .package(url: "https://github.com/MxIris-Library-Forks/CombineCocoa", branch: "main"),
     ],
     targets: [
         .target(
@@ -71,7 +76,9 @@ let package = Package(
                 .process("Resources"),
             ]
         ),
-        .target(name: "UtilitiesCore"),
+        .target(
+            name: "UtilitiesCore"
+        ),
         .target(
             name: "UtilitiesUI",
             dependencies: [
@@ -80,9 +87,18 @@ let package = Package(
                 .product(name: "FoundationToolbox", package: "FrameworkToolbox"),
                 .product(name: "UIFoundation", package: "UIFoundation"),
                 .product(name: "UIFoundationToolbox", package: "UIFoundation"),
+                .product(name: "CombineCocoa", package: "CombineCocoa"),
+                .product(name: "SnapKit", package: "SnapKit"),
+                .product(name: "SFSymbol", package: "SFSymbol"),
+                .product(name: "AdvancedCollectionTableView", package: "AdvancedCollectionTableView"),
+                .product(name: "IDEIcons", package: "ide-icons"),
+                .product(name: "MenuBuilder", package: "MenuBuilder"),
             ],
             resources: [
                 .process("Resources"),
+            ],
+            swiftSettings: [
+                .enableExperimentalFeature("AccessLevelOnImport"),
             ]
         ),
         .target(
