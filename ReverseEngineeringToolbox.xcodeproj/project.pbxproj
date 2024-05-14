@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E97A1B1A2BF3CCAB0069B4BF /* FridaTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = E97A1B192BF3CCAB0069B4BF /* FridaTrack.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E97A1B1D2BF3CCAB0069B4BF /* FridaTrack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E97A1B172BF3CCAB0069B4BF /* FridaTrack.framework */; };
+		E97A1B1E2BF3CCAB0069B4BF /* FridaTrack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E97A1B172BF3CCAB0069B4BF /* FridaTrack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E97A1B282BF3CCCA0069B4BF /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97A1B272BF3CCCA0069B4BF /* File.swift */; };
+		E97A1B2A2BF3D82D0069B4BF /* Frida.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E97A1B292BF3D82D0069B4BF /* Frida.xcframework */; };
+		E97A1B2B2BF3D82D0069B4BF /* Frida.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E97A1B292BF3D82D0069B4BF /* Frida.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E984AB3C2B960ACB002B59F5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E984AB3B2B960ACB002B59F5 /* AppDelegate.swift */; };
 		E984AB3E2B960ACB002B59F5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E984AB3D2B960ACB002B59F5 /* ViewController.swift */; };
 		E984AB402B960ACC002B59F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E984AB3F2B960ACC002B59F5 /* Assets.xcassets */; };
@@ -30,7 +36,47 @@
 		E9F5C1A22BEE7ECB00D763AD /* MainToolbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F5C1A12BEE7ECB00D763AD /* MainToolbarController.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		E97A1B1B2BF3CCAB0069B4BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E984AB302B960ACB002B59F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E97A1B162BF3CCAB0069B4BF;
+			remoteInfo = FridaTrack;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E97A1B1F2BF3CCAB0069B4BF /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E97A1B1E2BF3CCAB0069B4BF /* FridaTrack.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E97A1B2C2BF3D82D0069B4BF /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E97A1B2B2BF3D82D0069B4BF /* Frida.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		E97A1B172BF3CCAB0069B4BF /* FridaTrack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FridaTrack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E97A1B192BF3CCAB0069B4BF /* FridaTrack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FridaTrack.h; sourceTree = "<group>"; };
+		E97A1B232BF3CCB90069B4BF /* Frida.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Frida.framework; path = Frameworks/Frida.framework; sourceTree = "<group>"; };
+		E97A1B272BF3CCCA0069B4BF /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		E97A1B292BF3D82D0069B4BF /* Frida.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Frida.xcframework; path = Frameworks/Frida.xcframework; sourceTree = "<group>"; };
 		E984AB382B960ACB002B59F5 /* ReverseEngineeringToolbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReverseEngineeringToolbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E984AB3B2B960ACB002B59F5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E984AB3D2B960ACB002B59F5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -49,6 +95,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		E97A1B142BF3CCAB0069B4BF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E97A1B2A2BF3D82D0069B4BF /* Frida.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E984AB352B960ACB002B59F5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -61,6 +115,7 @@
 				E99652A92BE941F900D89A55 /* StatusItemController in Frameworks */,
 				E99652A62BE9186D00D89A55 /* ApplicationLaunchers in Frameworks */,
 				E9F5C1872BED139C00D763AD /* UtilitiesUI in Frameworks */,
+				E97A1B1D2BF3CCAB0069B4BF /* FridaTrack.framework in Frameworks */,
 				E984AB562B98B20C002B59F5 /* UIFoundationAppleInternalObjC in Frameworks */,
 				E984AB582B98B20C002B59F5 /* UIFoundationToolbox in Frameworks */,
 			);
@@ -69,11 +124,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E97A1B182BF3CCAB0069B4BF /* FridaTrack */ = {
+			isa = PBXGroup;
+			children = (
+				E97A1B192BF3CCAB0069B4BF /* FridaTrack.h */,
+				E97A1B272BF3CCCA0069B4BF /* File.swift */,
+			);
+			path = FridaTrack;
+			sourceTree = "<group>";
+		};
 		E984AB2F2B960ACB002B59F5 = {
 			isa = PBXGroup;
 			children = (
 				E984AB4A2B960BB3002B59F5 /* Components */,
 				E984AB3A2B960ACB002B59F5 /* ReverseEngineeringToolbox */,
+				E97A1B182BF3CCAB0069B4BF /* FridaTrack */,
 				E984AB392B960ACB002B59F5 /* Products */,
 				E984AB4B2B98B1BE002B59F5 /* Frameworks */,
 			);
@@ -83,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				E984AB382B960ACB002B59F5 /* ReverseEngineeringToolbox.app */,
+				E97A1B172BF3CCAB0069B4BF /* FridaTrack.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -110,13 +176,45 @@
 		E984AB4B2B98B1BE002B59F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E97A1B292BF3D82D0069B4BF /* Frida.xcframework */,
+				E97A1B232BF3CCB90069B4BF /* Frida.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		E97A1B122BF3CCAB0069B4BF /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E97A1B1A2BF3CCAB0069B4BF /* FridaTrack.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		E97A1B162BF3CCAB0069B4BF /* FridaTrack */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E97A1B222BF3CCAB0069B4BF /* Build configuration list for PBXNativeTarget "FridaTrack" */;
+			buildPhases = (
+				E97A1B122BF3CCAB0069B4BF /* Headers */,
+				E97A1B132BF3CCAB0069B4BF /* Sources */,
+				E97A1B142BF3CCAB0069B4BF /* Frameworks */,
+				E97A1B152BF3CCAB0069B4BF /* Resources */,
+				E97A1B2C2BF3D82D0069B4BF /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FridaTrack;
+			productName = FridaTrack;
+			productReference = E97A1B172BF3CCAB0069B4BF /* FridaTrack.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		E984AB372B960ACB002B59F5 /* ReverseEngineeringToolbox */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E984AB472B960ACC002B59F5 /* Build configuration list for PBXNativeTarget "ReverseEngineeringToolbox" */;
@@ -124,10 +222,12 @@
 				E984AB342B960ACB002B59F5 /* Sources */,
 				E984AB352B960ACB002B59F5 /* Frameworks */,
 				E984AB362B960ACB002B59F5 /* Resources */,
+				E97A1B1F2BF3CCAB0069B4BF /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				E97A1B1C2BF3CCAB0069B4BF /* PBXTargetDependency */,
 			);
 			name = ReverseEngineeringToolbox;
 			packageProductDependencies = (
@@ -156,6 +256,10 @@
 				LastSwiftUpdateCheck = 1530;
 				LastUpgradeCheck = 1530;
 				TargetAttributes = {
+					E97A1B162BF3CCAB0069B4BF = {
+						CreatedOnToolsVersion = 15.3;
+						LastSwiftMigration = 1530;
+					};
 					E984AB372B960ACB002B59F5 = {
 						CreatedOnToolsVersion = 15.3;
 					};
@@ -180,11 +284,19 @@
 			projectRoot = "";
 			targets = (
 				E984AB372B960ACB002B59F5 /* ReverseEngineeringToolbox */,
+				E97A1B162BF3CCAB0069B4BF /* FridaTrack */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		E97A1B152BF3CCAB0069B4BF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E984AB362B960ACB002B59F5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -197,6 +309,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		E97A1B132BF3CCAB0069B4BF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E97A1B282BF3CCCA0069B4BF /* File.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E984AB342B960ACB002B59F5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -215,6 +335,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		E97A1B1C2BF3CCAB0069B4BF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E97A1B162BF3CCAB0069B4BF /* FridaTrack */;
+			targetProxy = E97A1B1B2BF3CCAB0069B4BF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		E984AB412B960ACC002B59F5 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -227,6 +355,87 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		E97A1B202BF3CCAB0069B4BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.JH.FridaTrack;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		E97A1B212BF3CCAB0069B4BF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.JH.FridaTrack;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		E984AB452B960ACC002B59F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -348,6 +557,7 @@
 		E984AB482B960ACC002B59F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ReverseEngineeringToolbox/ReverseEngineeringToolbox.entitlements;
@@ -376,6 +586,7 @@
 		E984AB492B960ACC002B59F5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ReverseEngineeringToolbox/ReverseEngineeringToolbox.entitlements;
@@ -404,6 +615,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		E97A1B222BF3CCAB0069B4BF /* Build configuration list for PBXNativeTarget "FridaTrack" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E97A1B202BF3CCAB0069B4BF /* Debug */,
+				E97A1B212BF3CCAB0069B4BF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E984AB332B960ACB002B59F5 /* Build configuration list for PBXProject "ReverseEngineeringToolbox" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -1,0 +1,588 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)
+// swift-module-flags: -target arm64-apple-macos11.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -Osize -module-name Frida
+import AppKit
+import Dispatch
+import Foundation
+import Frida_Private
+import Swift
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+@_hasMissingDesignatedInitializers @objc(FridaApplicationDetails) public class ApplicationDetails : ObjectiveC.NSObject, Foundation.NSCopying {
+  @objc public func copy(with zone: ObjectiveC.NSZone?) -> Any
+  @objc deinit
+  @objc public var identifier: Swift.String {
+    @objc get
+  }
+  @objc public var name: Swift.String {
+    @objc get
+  }
+  public var pid: Swift.UInt? {
+    get
+  }
+  public var parameters: [Swift.String : Any] {
+    get
+    set
+  }
+  @objc public var icons: [AppKit.NSImage] {
+    @objc get
+    @objc set
+  }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc override dynamic public var hash: Swift.Int {
+    @objc get
+  }
+}
+@_hasMissingDesignatedInitializers @objc(FridaBus) public class Bus : ObjectiveC.NSObject, Foundation.NSCopying {
+  weak public var delegate: (any Frida.BusDelegate)?
+  public typealias AttachComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias AttachResult = () throws -> Swift.Bool
+  @objc public func copy(with zone: ObjectiveC.NSZone?) -> Any
+  @objc deinit
+  public var isClosed: Swift.Bool {
+    get
+  }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc override dynamic public var hash: Swift.Int {
+    @objc get
+  }
+  public func attach(_ completionHandler: @escaping Frida.Bus.AttachComplete = { _ in })
+  public func post(_ message: Any, data: Foundation.Data? = nil)
+}
+@objc(FridaBusDelegate) public protocol BusDelegate {
+  @objc optional func busDetached(_ bus: Frida.Bus)
+  @objc optional func bus(_ bus: Frida.Bus, didReceiveMessage message: Any, withData data: Foundation.Data?)
+}
+@_hasMissingDesignatedInitializers @objc(FridaChildDetails) public class ChildDetails : ObjectiveC.NSObject, Foundation.NSCopying {
+  @objc public func copy(with zone: ObjectiveC.NSZone?) -> Any
+  @objc deinit
+  public var pid: Swift.UInt {
+    get
+  }
+  public var parentPid: Swift.UInt {
+    get
+  }
+  public var origin: Frida.ChildOrigin {
+    get
+  }
+  public var identifier: Swift.String? {
+    get
+  }
+  public var path: Swift.String? {
+    get
+  }
+  public var argv: [Swift.String]? {
+    get
+  }
+  public var envp: [Swift.String : Swift.String]? {
+    get
+  }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc override dynamic public var hash: Swift.Int {
+    @objc get
+  }
+}
+@objc(FridaChildOrigin) public enum ChildOrigin : Swift.UInt32, Swift.CustomStringConvertible {
+  case fork
+  case exec
+  case spawn
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.UInt32)
+  public typealias RawValue = Swift.UInt32
+  public var rawValue: Swift.UInt32 {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers @objc(FridaCrashDetails) public class CrashDetails : ObjectiveC.NSObject, Foundation.NSCopying {
+  @objc public func copy(with zone: ObjectiveC.NSZone?) -> Any
+  @objc deinit
+  public var pid: Swift.UInt {
+    get
+  }
+  public var processName: Swift.String {
+    get
+  }
+  public var summary: Swift.String {
+    get
+  }
+  public var report: Swift.String {
+    get
+  }
+  public var parameters: [Swift.String : Any] {
+    get
+    set
+  }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc override dynamic public var hash: Swift.Int {
+    @objc get
+  }
+}
+@_hasMissingDesignatedInitializers @objc(FridaDevice) public class Device : ObjectiveC.NSObject, Foundation.NSCopying {
+  weak public var delegate: (any Frida.DeviceDelegate)?
+  public enum Kind {
+    case local
+    case remote
+    case usb
+    public static func == (a: Frida.Device.Kind, b: Frida.Device.Kind) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public typealias QuerySystemParametersComplete = (_ result: () throws -> [Swift.String : Any]) -> Swift.Void
+  public typealias QuerySystemParametersResult = () throws -> [Swift.String : Any]
+  public typealias GetFrontmostApplicationComplete = (_ result: () throws -> Frida.ApplicationDetails?) -> Swift.Void
+  public typealias GetFrontmostApplicationResult = () throws -> Frida.ApplicationDetails?
+  public typealias EnumerateApplicationsComplete = (_ result: () throws -> [Frida.ApplicationDetails]) -> Swift.Void
+  public typealias EnumerateApplicationsResult = () throws -> [Frida.ApplicationDetails]
+  public typealias EnumerateProcessesComplete = (_ result: () throws -> [Frida.ProcessDetails]) -> Swift.Void
+  public typealias EnumerateProcessesResult = () throws -> [Frida.ProcessDetails]
+  public typealias EnableSpawnGatingComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias EnableSpawnGatingResult = () throws -> Swift.Bool
+  public typealias DisableSpawnGatingComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias DisableSpawnGatingResult = () throws -> Swift.Bool
+  public typealias EnumeratePendingSpawnComplete = (_ result: () throws -> [Frida.SpawnDetails]) -> Swift.Void
+  public typealias EnumeratePendingSpawnResult = () throws -> [Frida.SpawnDetails]
+  public typealias EnumeratePendingChildrenComplete = (_ result: () throws -> [Frida.ChildDetails]) -> Swift.Void
+  public typealias EnumeratePendingChildrenResult = () throws -> [Frida.ChildDetails]
+  public typealias SpawnComplete = (_ result: () throws -> Swift.UInt) -> Swift.Void
+  public typealias SpawnResult = () throws -> Swift.UInt
+  public typealias InputComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias InputResult = () throws -> Swift.Bool
+  public typealias ResumeComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias ResumeResult = () throws -> Swift.Bool
+  public typealias KillComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias KillResult = () throws -> Swift.Bool
+  public typealias AttachComplete = (_ result: () throws -> Frida.Session) -> Swift.Void
+  public typealias AttachResult = () throws -> Frida.Session
+  public typealias InjectLibraryFileComplete = (_ result: () throws -> Swift.UInt) -> Swift.Void
+  public typealias InjectLibraryFileResult = () throws -> Swift.UInt
+  public typealias InjectLibraryBlobComplete = (_ result: () throws -> Swift.UInt) -> Swift.Void
+  public typealias InjectLibraryBlobResult = () throws -> Swift.UInt
+  public typealias OpenChannelComplete = (_ result: () throws -> Frida.IOStream) -> Swift.Void
+  public typealias OpenChannelResult = () throws -> Frida.IOStream
+  @objc public func copy(with zone: ObjectiveC.NSZone?) -> Any
+  @objc deinit
+  @objc public var id: Swift.String {
+    @objc get
+  }
+  @objc public var name: Swift.String {
+    @objc get
+  }
+  @objc public var icon: AppKit.NSImage? {
+    @objc get
+    @objc set
+  }
+  public var kind: Frida.Device.Kind {
+    get
+  }
+  public var bus: Frida.Bus {
+    get
+    set
+  }
+  public var isLost: Swift.Bool {
+    get
+  }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc override dynamic public var hash: Swift.Int {
+    @objc get
+  }
+  public func querySystemParameters(_ completionHandler: @escaping Frida.Device.QuerySystemParametersComplete)
+  public func getFrontmostApplication(scope: Frida.Scope? = nil, _ completionHandler: @escaping Frida.Device.GetFrontmostApplicationComplete)
+  public func enumerateApplications(identifiers: [Swift.String]? = nil, scope: Frida.Scope? = nil, _ completionHandler: @escaping Frida.Device.EnumerateApplicationsComplete)
+  public func enumerateProcesses(pids: [Swift.UInt]? = nil, scope: Frida.Scope? = nil, _ completionHandler: @escaping Frida.Device.EnumerateProcessesComplete)
+  public func enableSpawnGating(_ completionHandler: @escaping Frida.Device.EnableSpawnGatingComplete = { _ in })
+  public func disableSpawnGating(_ completionHandler: @escaping Frida.Device.DisableSpawnGatingComplete = { _ in })
+  public func enumeratePendingSpawn(_ completionHandler: @escaping Frida.Device.EnumeratePendingSpawnComplete)
+  public func enumeratePendingChildren(_ completionHandler: @escaping Frida.Device.EnumeratePendingChildrenComplete)
+  public func spawn(_ program: Swift.String, argv: [Swift.String]? = nil, envp: [Swift.String : Swift.String]? = nil, env: [Swift.String : Swift.String]? = nil, cwd: Swift.String? = nil, stdio: Frida.Stdio? = nil, completionHandler: @escaping Frida.Device.SpawnComplete)
+  public func input(_ pid: Swift.UInt, data: Foundation.Data, completionHandler: @escaping Frida.Device.InputComplete = { _ in })
+  public func resume(_ pid: Swift.UInt, completionHandler: @escaping Frida.Device.ResumeComplete = { _ in })
+  public func kill(_ pid: Swift.UInt, completionHandler: @escaping Frida.Device.KillComplete = { _ in })
+  public func attach(to pid: Swift.UInt, realm: Frida.Realm? = nil, persistTimeout: Swift.UInt? = nil, completionHandler: @escaping Frida.Device.AttachComplete)
+  public func injectLibraryFileFile(into pid: Swift.UInt, path: Swift.String, entrypoint: Swift.String, data: Swift.String, completionHandler: @escaping Frida.Device.InjectLibraryFileComplete)
+  public func injectLibraryBlobBlob(into pid: Swift.UInt, blob: Foundation.Data, entrypoint: Swift.String, data: Swift.String, completionHandler: @escaping Frida.Device.InjectLibraryBlobComplete)
+  public func openChannel(_ address: Swift.String, completionHandler: @escaping Frida.Device.OpenChannelComplete)
+}
+@objc(FridaScope) public enum Scope : Swift.UInt32, Swift.CustomStringConvertible {
+  case minimal
+  case metadata
+  case full
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.UInt32)
+  public typealias RawValue = Swift.UInt32
+  public var rawValue: Swift.UInt32 {
+    get
+  }
+}
+@objc(FridaStdio) public enum Stdio : Swift.UInt32, Swift.CustomStringConvertible {
+  case inherit
+  case pipe
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.UInt32)
+  public typealias RawValue = Swift.UInt32
+  public var rawValue: Swift.UInt32 {
+    get
+  }
+}
+@objc(FridaRealm) public enum Realm : Swift.UInt32, Swift.CustomStringConvertible {
+  case native
+  case emulated
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.UInt32)
+  public typealias RawValue = Swift.UInt32
+  public var rawValue: Swift.UInt32 {
+    get
+  }
+}
+@objc(FridaDeviceDelegate) public protocol DeviceDelegate {
+  @objc optional func deviceLost(_ device: Frida.Device)
+  @objc optional func device(_ device: Frida.Device, didAddSpawn spawn: Frida.SpawnDetails)
+  @objc optional func device(_ device: Frida.Device, didRemoveSpawn spawn: Frida.SpawnDetails)
+  @objc optional func device(_ device: Frida.Device, didAddChild spawn: Frida.ChildDetails)
+  @objc optional func device(_ device: Frida.Device, didRemoveChild spawn: Frida.ChildDetails)
+  @objc optional func device(_ device: Frida.Device, didObserveCrash crash: Frida.CrashDetails)
+  @objc optional func device(_ device: Frida.Device, didOutput data: Foundation.Data, toFileDescriptor fd: Swift.Int, fromProcess pid: Swift.UInt)
+  @objc optional func device(_ device: Frida.Device, didUninject id: Swift.UInt)
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(FridaDeviceManager) public class DeviceManager : ObjectiveC.NSObject, Foundation.NSCopying {
+  weak public var delegate: (any Frida.DeviceManagerDelegate)?
+  public typealias CloseComplete = () -> Swift.Void
+  public typealias EnumerateDevicesComplete = (_ result: () throws -> [Frida.Device]) -> Swift.Void
+  public typealias EnumerateDevicesResult = () throws -> [Frida.Device]
+  public typealias AddRemoteDeviceComplete = (_ result: () throws -> Frida.Device) -> Swift.Void
+  public typealias AddRemoteDeviceResult = () throws -> Frida.Device
+  public typealias RemoveRemoteDeviceComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias RemoveRemoteDeviceResult = () throws -> Swift.Bool
+  @objc convenience override dynamic public init()
+  @objc public func copy(with zone: ObjectiveC.NSZone?) -> Any
+  @objc deinit
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc override dynamic public var hash: Swift.Int {
+    @objc get
+  }
+  public func close(_ completionHandler: @escaping Frida.DeviceManager.CloseComplete = {})
+  public func enumerateDevices(_ completionHandler: @escaping Frida.DeviceManager.EnumerateDevicesComplete)
+  public func addRemoteDevice(address: Swift.String, certificate: Swift.String? = nil, origin: Swift.String? = nil, token: Swift.String? = nil, keepaliveInterval: Swift.Int? = nil, completionHandler: @escaping Frida.DeviceManager.AddRemoteDeviceComplete = { _ in })
+  public func removeRemoteDevice(address: Swift.String, completionHandler: @escaping Frida.DeviceManager.RemoveRemoteDeviceComplete = { _ in })
+}
+@objc(FridaDeviceManagerDelegate) public protocol DeviceManagerDelegate {
+  @objc optional func deviceManager(_ manager: Frida.DeviceManager, didAddDevice device: Frida.Device)
+  @objc optional func deviceManager(_ manager: Frida.DeviceManager, didRemoveDevice device: Frida.Device)
+  @objc optional func deviceManagerDidChangeDevices(_ manager: Frida.DeviceManager)
+}
+public enum Error : Swift.Error {
+  case serverNotRunning(Swift.String)
+  case executableNotFound(Swift.String)
+  case executableNotSupported(Swift.String)
+  case processNotFound(Swift.String)
+  case processNotResponding(Swift.String)
+  case invalidArgument(Swift.String)
+  case invalidOperation(Swift.String)
+  case permissionDenied(Swift.String)
+  case addressInUse(Swift.String)
+  case timedOut(Swift.String)
+  case notSupported(Swift.String)
+  case protocolViolation(Swift.String)
+  case transport(Swift.String)
+  case rpcError(message: Swift.String, stackTrace: Swift.String?)
+}
+@_hasMissingDesignatedInitializers @objc(FridaIOStream) public class IOStream : ObjectiveC.NSObject, Foundation.NSCopying {
+  public typealias CloseComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias CloseResult = () throws -> Swift.Bool
+  public typealias ReadComplete = (_ result: () throws -> Foundation.Data) -> Swift.Void
+  public typealias ReadResult = () throws -> Foundation.Data
+  public typealias ReadAllComplete = (_ result: () throws -> Foundation.Data) -> Swift.Void
+  public typealias ReadAllResult = () throws -> Foundation.Data
+  public typealias WriteComplete = (_ result: () throws -> Swift.UInt) -> Swift.Void
+  public typealias WriteResult = () throws -> Swift.UInt
+  public typealias WriteAllComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias WriteAllResult = () throws -> Swift.Bool
+  @objc public func copy(with zone: ObjectiveC.NSZone?) -> Any
+  @objc deinit
+  public var isClosed: Swift.Bool {
+    get
+  }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc override dynamic public var hash: Swift.Int {
+    @objc get
+  }
+  public func close(_ count: Swift.UInt, completionHandler: @escaping Frida.IOStream.CloseComplete)
+  public func read(_ count: Swift.UInt, completionHandler: @escaping Frida.IOStream.ReadComplete)
+  public func readAll(_ count: Swift.UInt, completionHandler: @escaping Frida.IOStream.ReadAllComplete)
+  public func write(_ data: Foundation.Data, completionHandler: @escaping Frida.IOStream.WriteComplete)
+  public func writeAll(_ data: Foundation.Data, completionHandler: @escaping Frida.IOStream.WriteAllComplete)
+}
+@_hasMissingDesignatedInitializers @objc(FridaPortalMembership) public class PortalMembership : ObjectiveC.NSObject, Foundation.NSCopying {
+  public typealias TerminateComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias TerminateResult = () throws -> Swift.Bool
+  @objc public func copy(with zone: ObjectiveC.NSZone?) -> Any
+  @objc deinit
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc override dynamic public var hash: Swift.Int {
+    @objc get
+  }
+  public func terminate(_ completionHandler: @escaping Frida.PortalMembership.TerminateComplete = { _ in })
+}
+@_hasMissingDesignatedInitializers @objc(FridaProcessDetails) public class ProcessDetails : ObjectiveC.NSObject, Foundation.NSCopying {
+  @objc public func copy(with zone: ObjectiveC.NSZone?) -> Any
+  @objc deinit
+  @objc public var pid: Swift.UInt {
+    @objc get
+  }
+  @objc public var name: Swift.String {
+    @objc get
+  }
+  public var parameters: [Swift.String : Any] {
+    get
+    set
+  }
+  @objc public var icons: [AppKit.NSImage] {
+    @objc get
+    @objc set
+  }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc override dynamic public var hash: Swift.Int {
+    @objc get
+  }
+}
+@_hasMissingDesignatedInitializers @objc(FridaRelay) public class Relay : ObjectiveC.NSObject {
+  public func copy(with zone: ObjectiveC.NSZone?) -> Any
+  @objc deinit
+  public var address: Swift.String {
+    get
+  }
+  public var username: Swift.String {
+    get
+  }
+  public var password: Swift.String {
+    get
+  }
+  public var kind: Frida.RelayKind {
+    get
+  }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc override dynamic public var hash: Swift.Int {
+    @objc get
+  }
+}
+@objc(FridaRelayKind) public enum RelayKind : Swift.UInt32, Swift.CustomStringConvertible {
+  case turnUdp
+  case turnTcp
+  case turnTls
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.UInt32)
+  public typealias RawValue = Swift.UInt32
+  public var rawValue: Swift.UInt32 {
+    get
+  }
+}
+@dynamicCallable public struct RpcFunction {
+  public func dynamicallyCall(withArguments args: [Any]) -> Frida.RpcRequest
+}
+@_hasMissingDesignatedInitializers public class RpcRequest {
+  public func onResult<T>(as: T.Type, callback: @escaping (Frida.RpcResult<T>) -> Swift.Void)
+  @objc deinit
+}
+public enum RpcResult<T> {
+  case success(T)
+  case error(any Swift.Error)
+}
+@_hasMissingDesignatedInitializers @objc(FridaScript) public class Script : ObjectiveC.NSObject, Foundation.NSCopying {
+  weak public var delegate: (any Frida.ScriptDelegate)?
+  public typealias LoadComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias LoadResult = () throws -> Swift.Bool
+  public typealias UnloadComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias UnloadResult = () throws -> Swift.Bool
+  public typealias EternalizeComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias EternalizeResult = () throws -> Swift.Bool
+  public typealias EnableDebuggerComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias EnableDebuggerResult = () throws -> Swift.Bool
+  public typealias DisableDebuggerComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias DisableDebuggerResult = () throws -> Swift.Bool
+  @objc public func copy(with zone: ObjectiveC.NSZone?) -> Any
+  @objc deinit
+  public var exports: Frida.Script.Exports {
+    get
+    set
+  }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc override dynamic public var hash: Swift.Int {
+    @objc get
+  }
+  public func load(_ completionHandler: @escaping Frida.Script.LoadComplete = { _ in })
+  public func unload(_ completionHandler: @escaping Frida.Script.UnloadComplete = { _ in })
+  public func eternalize(_ completionHandler: @escaping Frida.Script.EternalizeComplete = { _ in })
+  public func post(_ message: Any, data: Foundation.Data? = nil)
+  public func enableDebugger(_ port: Swift.UInt16 = 0, completionHandler: @escaping Frida.Script.EnableDebuggerComplete = { _ in })
+  public func disableDebugger(_ completionHandler: @escaping Frida.Script.DisableDebuggerComplete = { _ in })
+  @dynamicMemberLookup public struct Exports {
+    public subscript(dynamicMember functionName: Swift.String) -> Frida.RpcFunction {
+      get
+    }
+  }
+}
+@objc(FridaScriptDelegate) public protocol ScriptDelegate {
+  @objc optional func scriptDestroyed(_ script: Frida.Script)
+  @objc optional func script(_ script: Frida.Script, didReceiveMessage message: Any, withData data: Foundation.Data?)
+}
+@_hasMissingDesignatedInitializers @objc(FridaSession) public class Session : ObjectiveC.NSObject, Foundation.NSCopying {
+  weak public var delegate: (any Frida.SessionDelegate)?
+  public typealias DetachComplete = () -> Swift.Void
+  public typealias ResumeComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias ResumeResult = () throws -> Swift.Bool
+  public typealias EnableChildGatingComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias EnableChildGatingResult = () throws -> Swift.Bool
+  public typealias DisableChildGatingComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias DisableChildGatingResult = () throws -> Swift.Bool
+  public typealias CreateScriptComplete = (_ result: () throws -> Frida.Script) -> Swift.Void
+  public typealias CreateScriptResult = () throws -> Frida.Script
+  public typealias CompileScriptComplete = (_ result: () throws -> Foundation.Data) -> Swift.Void
+  public typealias CompileScriptResult = () throws -> Foundation.Data
+  public typealias SetupPeerConnectionComplete = (_ result: () throws -> Swift.Bool) -> Swift.Void
+  public typealias SetupPeerConnectionResult = () throws -> Swift.Bool
+  public typealias JoinPortalComplete = (_ result: () throws -> Frida.PortalMembership) -> Swift.Void
+  public typealias JoinPortalResult = () throws -> Frida.PortalMembership
+  @objc public func copy(with zone: ObjectiveC.NSZone?) -> Any
+  @objc deinit
+  public var pid: Swift.UInt {
+    get
+  }
+  public var persistTimeout: Swift.UInt {
+    get
+  }
+  public var isDetached: Swift.Bool {
+    get
+  }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc override dynamic public var hash: Swift.Int {
+    @objc get
+  }
+  public func detach(_ completionHandler: @escaping Frida.Session.DetachComplete = {})
+  public func resume(_ completionHandler: @escaping Frida.Session.ResumeComplete = { _ in })
+  public func enableChildGating(_ completionHandler: @escaping Frida.Session.EnableChildGatingComplete = { _ in })
+  public func disableChildGating(_ completionHandler: @escaping Frida.Session.DisableChildGatingComplete = { _ in })
+  public func createScript(_ source: Swift.String, name: Swift.String? = nil, runtime: Frida.ScriptRuntime? = nil, completionHandler: @escaping Frida.Session.CreateScriptComplete)
+  public func createScript(_ bytes: Foundation.Data, name: Swift.String? = nil, runtime: Frida.ScriptRuntime? = nil, completionHandler: @escaping Frida.Session.CreateScriptComplete)
+  public func compileScript(_ source: Swift.String, name: Swift.String? = nil, runtime: Frida.ScriptRuntime? = nil, completionHandler: @escaping Frida.Session.CompileScriptComplete)
+  public func setupPeerConnection(stunServer: Swift.String? = nil, relays: [Frida.Relay]? = nil, completionHandler: @escaping Frida.Session.SetupPeerConnectionComplete = { _ in })
+  public func joinPortal(_ address: Swift.String, certificate: Swift.String? = nil, token: Swift.String? = nil, acl: [Swift.String]? = nil, completionHandler: @escaping Frida.Session.JoinPortalComplete = { _ in })
+}
+@objc(FridaSessionDetachReason) public enum SessionDetachReason : Swift.Int, Swift.CustomStringConvertible {
+  case applicationRequested = 1
+  case processReplaced
+  case processTerminated
+  case connectionTerminated
+  case deviceLost
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc(FridaScriptRuntime) public enum ScriptRuntime : Swift.UInt32, Swift.CustomStringConvertible {
+  case auto
+  case qjs
+  case v8
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.UInt32)
+  public typealias RawValue = Swift.UInt32
+  public var rawValue: Swift.UInt32 {
+    get
+  }
+}
+@objc(FridaSessionDelegate) public protocol SessionDelegate {
+  @objc func session(_ session: Frida.Session, didDetach reason: Frida.SessionDetachReason, crash: Frida.CrashDetails?)
+}
+@_hasMissingDesignatedInitializers @objc(FridaSpawnDetails) public class SpawnDetails : ObjectiveC.NSObject, Foundation.NSCopying {
+  @objc public func copy(with zone: ObjectiveC.NSZone?) -> Any
+  @objc deinit
+  public var pid: Swift.UInt {
+    get
+  }
+  public var identifier: Swift.String? {
+    get
+  }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc override dynamic public var hash: Swift.Int {
+    @objc get
+  }
+}
+extension Frida.ChildOrigin : Swift.Equatable {}
+extension Frida.ChildOrigin : Swift.Hashable {}
+extension Frida.ChildOrigin : Swift.RawRepresentable {}
+extension Frida.Device.Kind : Swift.Equatable {}
+extension Frida.Device.Kind : Swift.Hashable {}
+extension Frida.Scope : Swift.Equatable {}
+extension Frida.Scope : Swift.Hashable {}
+extension Frida.Scope : Swift.RawRepresentable {}
+extension Frida.Stdio : Swift.Equatable {}
+extension Frida.Stdio : Swift.Hashable {}
+extension Frida.Stdio : Swift.RawRepresentable {}
+extension Frida.Realm : Swift.Equatable {}
+extension Frida.Realm : Swift.Hashable {}
+extension Frida.Realm : Swift.RawRepresentable {}
+extension Frida.RelayKind : Swift.Equatable {}
+extension Frida.RelayKind : Swift.Hashable {}
+extension Frida.RelayKind : Swift.RawRepresentable {}
+extension Frida.SessionDetachReason : Swift.Equatable {}
+extension Frida.SessionDetachReason : Swift.Hashable {}
+extension Frida.SessionDetachReason : Swift.RawRepresentable {}
+extension Frida.ScriptRuntime : Swift.Equatable {}
+extension Frida.ScriptRuntime : Swift.Hashable {}
+extension Frida.ScriptRuntime : Swift.RawRepresentable {}
