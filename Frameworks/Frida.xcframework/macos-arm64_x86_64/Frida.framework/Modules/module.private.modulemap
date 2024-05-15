@@ -1,2 +1,0 @@
-module Frida_Private [extern_c] {
-}

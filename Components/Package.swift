@@ -22,7 +22,11 @@ let package = Package(
         .library(
             name: "UtilitiesUI",
             targets: ["UtilitiesUI"]
-        )
+        ),
+        .library(
+            name: "FridaTrack",
+            targets: ["FridaTrack"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/sindresorhus/ExceptionCatcher.git", .upToNextMajor(from: "2.0.0")),
@@ -113,6 +117,17 @@ let package = Package(
                 .product(name: "FrameworkToolbox", package: "FrameworkToolbox"),
                 .product(name: "FoundationToolbox", package: "FrameworkToolbox"),
             ]
+        ),
+        .target(
+            name: "FridaTrack",
+            dependencies: [
+                "Frida",
+            ]
+        ),
+        .binaryTarget(
+            name: "Frida",
+            url: "https://github.com/MxIris-Reverse-Engineering-Forks/frida-swift/releases/download/20240515/Frida.xcframework.zip",
+            checksum: "e2c2f9810137173cd8069f6282bd39cc49ab1a956f665fedc3743fee1edabdf6"
         ),
         .testTarget(
             name: "SimulatorManagerTests",
