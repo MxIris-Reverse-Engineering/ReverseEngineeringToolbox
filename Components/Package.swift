@@ -81,7 +81,10 @@ let package = Package(
             ]
         ),
         .target(
-            name: "UtilitiesCore"
+            name: "UtilitiesCore",
+            swiftSettings: [
+                
+            ]
         ),
         .target(
             name: "UtilitiesUI",

@@ -3,7 +3,9 @@ import Combine
 
 public final class FloatingPointConvertController {
     public enum Precision: Int, CaseIterable, Hashable {
+        #if arch(arm64)
         case float16
+        #endif
         case float32
         case double
     }
@@ -49,6 +51,7 @@ public final class FloatingPointConvertController {
     private func decimalStringDidChange() {
         performChange {
             switch currentPrecision {
+            #if arch(arm64)
             case .float16:
                 if let float16Value = Float16(decimalString) {
                     binaryString = float16Value.bitPatternMode.binaryString
@@ -57,6 +60,7 @@ public final class FloatingPointConvertController {
                     binaryString = ""
                     hexadecimalString = ""
                 }
+            #endif
             case .float32:
                 if let float32Value = Float(decimalString) {
                     binaryString = float32Value.bitPatternMode.binaryString
@@ -80,6 +84,7 @@ public final class FloatingPointConvertController {
     private func binaryStringDidChange() {
         performChange {
             switch currentPrecision {
+            #if arch(arm64)
             case .float16:
                 if let float16Value = binaryString.bitPatternMode.binaryStringToFloat16 {
                     decimalString = float16Value.description
@@ -88,6 +93,8 @@ public final class FloatingPointConvertController {
                     decimalString = ""
                     hexadecimalString = ""
                 }
+            #endif
+
             case .float32:
                 if let float32Value = binaryString.bitPatternMode.binaryStringToFloat {
                     decimalString = float32Value.description
@@ -111,6 +118,7 @@ public final class FloatingPointConvertController {
     private func hexadecimalStringDidChange() {
         performChange {
             switch currentPrecision {
+            #if arch(arm64)
             case .float16:
                 if let float16Value = hexadecimalString.bitPatternMode.hexStringToFloat16 {
                     binaryString = float16Value.bitPatternMode.binaryString
@@ -119,6 +127,7 @@ public final class FloatingPointConvertController {
                     binaryString = ""
                     decimalString = ""
                 }
+            #endif
             case .float32:
                 if let float32Value = hexadecimalString.bitPatternMode.hexStringToFloat {
                     binaryString = float32Value.bitPatternMode.binaryString

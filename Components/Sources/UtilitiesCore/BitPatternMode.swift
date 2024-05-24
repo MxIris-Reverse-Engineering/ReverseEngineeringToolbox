@@ -13,13 +13,13 @@ public protocol BitPatternModeCompatible<Base> {
     static var bitPatternMode: BitPatternMode<Base>.Type { set get }
 }
 
-extension BitPatternModeCompatible {
-    public var bitPatternMode: BitPatternMode<Self> {
+public extension BitPatternModeCompatible {
+    var bitPatternMode: BitPatternMode<Self> {
         set {}
         get { BitPatternMode(self) }
     }
 
-    public static var bitPatternMode: BitPatternMode<Self>.Type {
+    static var bitPatternMode: BitPatternMode<Self>.Type {
         set {}
         get { BitPatternMode<Self>.self }
     }
@@ -27,88 +27,96 @@ extension BitPatternModeCompatible {
 
 extension String: BitPatternModeCompatible {}
 extension Float: BitPatternModeCompatible {}
+
+#if arch(arm64)
 extension Float16: BitPatternModeCompatible {}
+#endif
+
 extension Double: BitPatternModeCompatible {}
 extension CGFloat: BitPatternModeCompatible {}
 
-extension BitPatternMode<String> {
-    public var binaryStringToDouble: Double? {
+public extension BitPatternMode<String> {
+    var binaryStringToDouble: Double? {
         guard let bitPattern = UInt64(base, radix: 2) else { return nil }
         return Double(bitPattern: bitPattern)
     }
 
-    public var binaryStringToCGFloat: CGFloat? {
-        guard let bitPattern = UInt(base, radix: 2) else { return nil }
-        return CGFloat(bitPattern: bitPattern)
-    }
-
-    public var binaryStringToFloat: Float? {
-        guard let bitPattern = UInt32(base, radix: 2) else { return nil }
-        return Float(bitPattern: bitPattern)
-    }
-
-    public var binaryStringToFloat16: Float16? {
-        guard let bitPattern = UInt16(base, radix: 2) else { return nil }
-        return Float16(bitPattern: bitPattern)
-    }
-
-    public var hexStringToDouble: Double? {
+    var hexStringToDouble: Double? {
         guard let bitPattern = UInt64(base, radix: 16) else { return nil }
         return Double(bitPattern: bitPattern)
     }
 
-    public var hexStringToCGFloat: CGFloat? {
+    var binaryStringToCGFloat: CGFloat? {
+        guard let bitPattern = UInt(base, radix: 2) else { return nil }
+        return CGFloat(bitPattern: bitPattern)
+    }
+
+    var hexStringToCGFloat: CGFloat? {
         guard let bitPattern = UInt(base, radix: 16) else { return nil }
         return CGFloat(bitPattern: bitPattern)
     }
 
-    public var hexStringToFloat: Float? {
+    var binaryStringToFloat: Float? {
+        guard let bitPattern = UInt32(base, radix: 2) else { return nil }
+        return Float(bitPattern: bitPattern)
+    }
+
+    var hexStringToFloat: Float? {
         guard let bitPattern = UInt32(base, radix: 16) else { return nil }
         return Float(bitPattern: bitPattern)
     }
 
-    public var hexStringToFloat16: Float16? {
+    #if arch(arm64)
+    var binaryStringToFloat16: Float16? {
+        guard let bitPattern = UInt16(base, radix: 2) else { return nil }
+        return Float16(bitPattern: bitPattern)
+    }
+
+    var hexStringToFloat16: Float16? {
         guard let bitPattern = UInt16(base, radix: 16) else { return nil }
         return Float16(bitPattern: bitPattern)
     }
+    #endif
 }
 
-extension BitPatternMode<Float16> {
-    public var binaryString: String {
+#if arch(arm64)
+public extension BitPatternMode<Float16> {
+    var binaryString: String {
         .init(base.bitPattern, radix: 2)
     }
 
-    public var hexString: String {
+    var hexString: String {
+        .init(base.bitPattern, radix: 16)
+    }
+}
+#endif
+
+public extension BitPatternMode<Float> {
+    var binaryString: String {
+        .init(base.bitPattern, radix: 2)
+    }
+
+    var hexString: String {
         .init(base.bitPattern, radix: 16)
     }
 }
 
-extension BitPatternMode<Float> {
-    public var binaryString: String {
+public extension BitPatternMode<Double> {
+    var binaryString: String {
         .init(base.bitPattern, radix: 2)
     }
 
-    public var hexString: String {
+    var hexString: String {
         .init(base.bitPattern, radix: 16)
     }
 }
 
-extension BitPatternMode<Double> {
-    public var binaryString: String {
+public extension BitPatternMode<CGFloat> {
+    var binaryString: String {
         .init(base.bitPattern, radix: 2)
     }
 
-    public var hexString: String {
-        .init(base.bitPattern, radix: 16)
-    }
-}
-
-extension BitPatternMode<CGFloat> {
-    public var binaryString: String {
-        .init(base.bitPattern, radix: 2)
-    }
-
-    public var hexString: String {
+    var hexString: String {
         .init(base.bitPattern, radix: 16)
     }
 }
