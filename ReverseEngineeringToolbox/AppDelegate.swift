@@ -7,7 +7,6 @@
 
 import Cocoa
 import UIFoundation
-import ClassDumperCore
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {

@@ -5,3 +5,6 @@ import Frida
 class ScriptDelegate: Frida.ScriptDelegate {
     
 }
+
+
+

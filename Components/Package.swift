@@ -24,6 +24,10 @@ let package = Package(
             targets: ["UtilitiesUI"]
         ),
         .library(
+            name: "Frida",
+            targets: ["Frida"]
+        ),
+        .library(
             name: "FridaTrack",
             targets: ["FridaTrack"]
         ),
