@@ -451,16 +451,16 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/hexedbits/StatusItemController";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.1;
+				branch = main;
+				kind = branch;
 			};
 		};
 		E9A3A6432BAC8B1E007B4C18 /* XCRemoteSwiftPackageReference "AdvancedCollectionTableView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/flocked/AdvancedCollectionTableView";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

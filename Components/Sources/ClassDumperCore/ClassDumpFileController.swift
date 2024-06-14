@@ -46,7 +46,7 @@ public class ClassDumpFileController {
                 DispatchQueue.main.async(execute: .init(block: notifyStart))
             }
             
-            try ExceptionCatcher.catch { try ClassDumpManager.shared.performClassDump(onFile: sourcePath, toFolder: destinationPath) }
+            try ExceptionCatcher.catch { try CDClassDump.perform(onFile: sourcePath, toFolder: destinationPath) }
             
             if Thread.isMainThread {
                 notifyEnd()

@@ -33,14 +33,14 @@ class MainSidebarViewController: XiblessViewController<NSView> {
             configuration.text = item.title
             cellView.contentConfiguration = configuration
         }
-        let sectionHeaderRegistration = NSTableView.SectionHeaderRegistration<NSTableSectionHeaderView, Section> { sectionHeaderView, row, section in
-            var contentConfiguration = NSListContentConfiguration.sidebarHeader()
-            contentConfiguration.text = "Module"
-            contentConfiguration.margins.leading += 10
-            sectionHeaderView.contentConfiguration = contentConfiguration
-        }
+//        let sectionHeaderRegistration = NSTableView.SectionHeaderRegistration<NSTableSectionHeaderView, Section> { sectionHeaderView, row, section in
+//            var contentConfiguration = NSListContentConfiguration.sidebarHeader()
+//            contentConfiguration.text = "Module"
+//            contentConfiguration.margins.leading += 10
+//            sectionHeaderView.contentConfiguration = contentConfiguration
+//        }
         let dataSource = DataSource(tableView: tableView, cellRegistration: cellRegistration)
-        dataSource.applySectionHeaderViewRegistration(sectionHeaderRegistration)
+//        dataSource.applySectionHeaderViewRegistration(sectionHeaderRegistration)
         return dataSource
     }()
 
