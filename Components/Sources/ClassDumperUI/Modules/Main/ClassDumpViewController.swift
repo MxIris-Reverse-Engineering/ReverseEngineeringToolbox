@@ -9,7 +9,7 @@ public final class ClassDumpViewController: XiblessViewController<NSView> {
     
     public private(set) lazy var filesViewController = ClassDumpFilesViewController()
 
-    public private(set) lazy var dyldViewController = ClassDumpDyldViewController()
+//    public private(set) lazy var dyldViewController = ClassDumpDyldViewController()
     
     public private(set) lazy var simulatorViewController = ClassDumpSimulatorViewController()
     
@@ -31,10 +31,10 @@ public final class ClassDumpViewController: XiblessViewController<NSView> {
         }
         tabView.addTabViewItem(filesItem)
         
-        let dyldItem = NSTabViewItem(viewController: dyldViewController).then {
-            $0.label = "Dyld"
-        }
-        tabView.addTabViewItem(dyldItem)
+//        let dyldItem = NSTabViewItem(viewController: dyldViewController).then {
+//            $0.label = "Dyld"
+//        }
+//        tabView.addTabViewItem(dyldItem)
         
         let simulatorItem = NSTabViewItem(viewController: simulatorViewController).then {
             $0.label = "Simulator"

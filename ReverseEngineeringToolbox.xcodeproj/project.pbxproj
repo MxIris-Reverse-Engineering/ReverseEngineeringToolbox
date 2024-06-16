@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		E984AB3C2B960ACB002B59F5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E984AB3B2B960ACB002B59F5 /* AppDelegate.swift */; };
-		E984AB3E2B960ACB002B59F5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E984AB3D2B960ACB002B59F5 /* ViewController.swift */; };
 		E984AB402B960ACC002B59F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E984AB3F2B960ACC002B59F5 /* Assets.xcassets */; };
 		E984AB432B960ACC002B59F5 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E984AB422B960ACC002B59F5 /* Base */; };
 		E984AB4D2B98B1BE002B59F5 /* ClassDumperUI in Frameworks */ = {isa = PBXBuildFile; productRef = E984AB4C2B98B1BE002B59F5 /* ClassDumperUI */; };
@@ -35,7 +34,6 @@
 		E97A1B292BF3D82D0069B4BF /* Frida.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Frida.xcframework; path = Frameworks/Frida.xcframework; sourceTree = "<group>"; };
 		E984AB382B960ACB002B59F5 /* ReverseEngineeringToolbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReverseEngineeringToolbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E984AB3B2B960ACB002B59F5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E984AB3D2B960ACB002B59F5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E984AB3F2B960ACC002B59F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E984AB422B960ACC002B59F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E984AB442B960ACC002B59F5 /* ReverseEngineeringToolbox.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReverseEngineeringToolbox.entitlements; sourceTree = "<group>"; };
@@ -101,7 +99,6 @@
 				E9B70DFF2BA7166300B0E4FF /* MainSidebarViewController.swift */,
 				E984AB5B2B98B29A002B59F5 /* MainSplitViewController.swift */,
 				E99652AA2BE9420D00D89A55 /* MainStatusItemController.swift */,
-				E984AB3D2B960ACB002B59F5 /* ViewController.swift */,
 				E984AB3F2B960ACC002B59F5 /* Assets.xcassets */,
 				E984AB412B960ACC002B59F5 /* Main.storyboard */,
 				E984AB442B960ACC002B59F5 /* ReverseEngineeringToolbox.entitlements */,
@@ -206,7 +203,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E984AB5C2B98B29A002B59F5 /* MainSplitViewController.swift in Sources */,
-				E984AB3E2B960ACB002B59F5 /* ViewController.swift in Sources */,
 				E984AB3C2B960ACB002B59F5 /* AppDelegate.swift in Sources */,
 				E9B70E002BA7166300B0E4FF /* MainSidebarViewController.swift in Sources */,
 				E99652A42BE9176100D89A55 /* ServicesProvider.swift in Sources */,
