@@ -69,12 +69,14 @@ public class ClassDumpFileController {
         let configuration = CDClassDumpConfiguration()
         configuration.shouldStripCtor = true
         configuration.shouldStripDtor = true
-        configuration.shouldShowHeader = false
         configuration.shouldSortClasses = true
         configuration.shouldSortMethods = true
         configuration.shouldStripOverrides = true
         configuration.shouldStripSynthesized = true
         configuration.shouldShowIvarOffsets = true
+        configuration.shouldUseBOOLTypedef = true
+        configuration.shouldUseNSIntegerTypedef = true
+        configuration.shouldUseNSUIntegerTypedef = true
         configuration.sortedPropertyAttributeTypes = [.threadSafe, .reference, .readwrite, .setter, .getter, .class]
         return configuration
     }()
