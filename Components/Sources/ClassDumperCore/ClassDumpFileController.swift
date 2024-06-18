@@ -46,7 +46,9 @@ public class ClassDumpFileController {
                 DispatchQueue.main.async(execute: .init(block: notifyStart))
             }
             
-            try ExceptionCatcher.catch { try CDClassDump.perform(onFile: sourcePath, toFolder: destinationPath) }
+            try ExceptionCatcher.catch {
+                try CDClassDump.perform(onFile: sourcePath, toFolder: destinationPath, configuration: Self.classDumpConfiguration)
+            }
             
             if Thread.isMainThread {
                 notifyEnd()
@@ -62,4 +64,18 @@ public class ClassDumpFileController {
             }
         }
     }
+    
+    private static let classDumpConfiguration: CDClassDumpConfiguration = {
+        let configuration = CDClassDumpConfiguration()
+        configuration.shouldStripCtor = true
+        configuration.shouldStripDtor = true
+        configuration.shouldShowHeader = false
+        configuration.shouldSortClasses = true
+        configuration.shouldSortMethods = true
+        configuration.shouldStripOverrides = true
+        configuration.shouldStripSynthesized = true
+        configuration.shouldShowIvarOffsets = true
+        configuration.sortedPropertyAttributeTypes = [.threadSafe, .reference, .readwrite, .setter, .getter, .class]
+        return configuration
+    }()
 }
