@@ -9,8 +9,11 @@ import MenuBuilder
 
 class ClassDumpFilesTableViewAdapter {
     private unowned let tableView: NSTableView
+    
     private unowned let classDumpController: ClassDumpFilesController
+    
     private let dataSource: TableViewDiffableDataSource<TableViewSection, ClassDumpableFile>
+    
     init(tableView: NSTableView, classDumpController: ClassDumpFilesController) {
         self.tableView = tableView
         self.classDumpController = classDumpController

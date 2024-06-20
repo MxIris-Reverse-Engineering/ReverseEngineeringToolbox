@@ -8,20 +8,25 @@ public final class ClassDumpApplicationsViewController: ModuleXibViewController 
 
     let (scrollView, outlineView): (NSScrollView, ClassDumpApplicationsOutlineView) = ClassDumpApplicationsOutlineView.scrollableOutlineView()
 
-    let classDumpApplicationsController = ClassDumpApplicationsController()
+    let applicationsController: ClassDumpApplicationsController
 
-    lazy var outlineViewAdapter = ClassDumpApplicationsOutlineViewAdapter(outlineView: outlineView, classDumpApplicationsController: classDumpApplicationsController)
+    lazy var outlineViewAdapter = ClassDumpApplicationsOutlineViewAdapter(outlineView: outlineView, classDumpApplicationsController: applicationsController)
 
+    init(applicationsController: ClassDumpApplicationsController) {
+        self.applicationsController = applicationsController
+        super.init()
+    }
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         outlineContainerView.addSubview(withConstraint: scrollView)
         outlineViewAdapter.setup()
-        classDumpApplicationsController.delegate = self
+        applicationsController.delegate = self
     }
 
     @IBAction func searchApplicationsButtonAction(_ sender: NSButton) {
         outlineViewAdapter.beginUpdate()
-        classDumpApplicationsController.searchApplications()
+        applicationsController.searchApplications()
     }
 }
 

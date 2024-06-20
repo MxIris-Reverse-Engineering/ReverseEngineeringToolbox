@@ -13,9 +13,11 @@ import AdvancedCollectionTableView
 import FZUIKit
 import ApplicationLaunchers
 import MenuBuilder
+import ClassDump
 
 class ClassDumpSimulatorRuntimeTableView: NSTableView {}
 class ClassDumpSimulatorPathTableView: NSTableView {}
+class ClassDumpSimulatorView: NSView {}
 
 enum ClassDumpSimulatorRuntimeSection: Identifiable, CaseIterable {
     case main
@@ -27,18 +29,14 @@ enum ClassDumpSimulatorPathSection: Identifiable, CaseIterable {
     var id: Self { self }
 }
 
-class ClassDumpSimulatorView: NSView {}
-
-public class ClassDumpSimulatorViewController: XibViewController {
-    public override class var nibBundle: Bundle { .module }
-
+public class ClassDumpSimulatorViewController: ModuleXibViewController {
     @IBOutlet var runtimesTableView: ClassDumpSimulatorRuntimeTableView!
 
     @IBOutlet var pathsTableView: ClassDumpSimulatorPathTableView!
 
     @IBOutlet var filesTableView: ClassDumpFilesTableView!
 
-    private let classDumpSimulatorController = ClassDumpSimulatorController()
+    private let simulatorController: ClassDumpSimulatorController
 
     private lazy var runtimesTableViewDataSource: TableViewDiffableDataSource<ClassDumpSimulatorRuntimeSection, SimulatorRumtime> = {
         let cellRegistration = NSTableView.CellRegistration<NSTableCellView, SimulatorRumtime> { cellView, tableColumn, row, item in
@@ -60,7 +58,12 @@ public class ClassDumpSimulatorViewController: XibViewController {
         return .init(tableView: pathsTableView, cellRegistration: cellRegistration)
     }()
 
-    private lazy var filesTableViewAdapter = ClassDumpFilesTableViewAdapter(tableView: filesTableView, classDumpController: classDumpSimulatorController.classDumpFilesController)
+    private lazy var filesTableViewAdapter = ClassDumpFilesTableViewAdapter(tableView: filesTableView, classDumpController: simulatorController.classDumpFilesController)
+
+    init(simulatorController: ClassDumpSimulatorController) {
+        self.simulatorController = simulatorController
+        super.init()
+    }
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,7 +97,7 @@ public class ClassDumpSimulatorViewController: XibViewController {
             }
         }
 
-        classDumpSimulatorController.do {
+        simulatorController.do {
             $0.delegate = self
             $0.classDumpFilesController.delegate = self
         }
@@ -117,17 +120,17 @@ public class ClassDumpSimulatorViewController: XibViewController {
     }
 
     @IBAction func searchRuntimesButtonAction(_ sender: NSButton) {
-        classDumpSimulatorController.searchRuntimes()
+        simulatorController.searchRuntimes()
     }
 
     @objc func runtimesTableViewDoubleAction(_ sender: NSTableView) {
         guard let runtime = runtimesTableViewDataSource.item(forRow: sender.clickedRow) else { return }
-        classDumpSimulatorController.selectRuntime(runtime)
+        simulatorController.selectRuntime(runtime)
     }
 
     @objc func pathsTableViewDoubleAction(_ sender: NSTableView) {
         guard let path = pathsTableViewDataSource.item(forRow: sender.clickedRow) else { return }
-        classDumpSimulatorController.selectPath(path)
+        simulatorController.selectPath(path)
     }
 }
 

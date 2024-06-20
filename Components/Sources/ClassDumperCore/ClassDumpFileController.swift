@@ -1,7 +1,6 @@
 import Foundation
 import ExceptionCatcher
-
-private import ClassDump
+import ClassDump
 
 public protocol ClassDumpFileControllerDelegate: AnyObject {
     func classDumpFileController(_ controller: ClassDumpFileController, willStartDumpableFile dumpableFile: ClassDumpableFile)
@@ -9,11 +8,16 @@ public protocol ClassDumpFileControllerDelegate: AnyObject {
 }
 
 public class ClassDumpFileController {
-    public static let shared = ClassDumpFileController()
+    public static let sharedConfiguration = CDClassDumpConfiguration()
+    public static let shared = ClassDumpFileController(configuration: sharedConfiguration)
     
     public weak var delegate: ClassDumpFileControllerDelegate?
     
-    public init() {}
+    public let configuration: CDClassDumpConfiguration
+    
+    public init(configuration: CDClassDumpConfiguration) {
+        self.configuration = configuration
+    }
     
     private let fileManager = FileManager.default
     
@@ -47,7 +51,7 @@ public class ClassDumpFileController {
             }
             
             try ExceptionCatcher.catch {
-                try CDClassDump.perform(onFile: sourcePath, toFolder: destinationPath, configuration: Self.classDumpConfiguration)
+                try CDClassDump.perform(onFile: sourcePath, toFolder: destinationPath, configuration: configuration)
             }
             
             if Thread.isMainThread {
@@ -77,6 +81,7 @@ public class ClassDumpFileController {
         configuration.shouldUseBOOLTypedef = true
         configuration.shouldUseNSIntegerTypedef = true
         configuration.shouldUseNSUIntegerTypedef = true
+        configuration.shouldGenerateEmptyImplementationFile = true
         configuration.sortedPropertyAttributeTypes = [.threadSafe, .reference, .readwrite, .setter, .getter, .class]
         return configuration
     }()

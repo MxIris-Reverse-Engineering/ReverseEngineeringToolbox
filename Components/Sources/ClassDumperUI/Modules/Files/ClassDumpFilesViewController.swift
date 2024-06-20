@@ -14,24 +14,32 @@ import FoundationToolbox
 import UniformTypeIdentifiers
 import ClassDumperCore
 import ApplicationLaunchers
+import ClassDump
 
 public class ClassDumpFilesViewController: ModuleXibViewController {
-    @IBOutlet var selectSourceButton: NSButton!
-    @IBOutlet var performButton: NSButton!
-    @IBOutlet var showInFinderButton: NSButton!
-    @IBOutlet var isDirectoryCheckbox: NSButton!
-    @IBOutlet var autoSelectDestinationCheckbox: NSButton!
-    @IBOutlet var sourcePathTextField: NSTextField!
-    @IBOutlet var totalProgressIndicator: NSProgressIndicator!
-    @IBOutlet var tableView: ClassDumpFilesTableView!
-    let classDumpController = ClassDumpFilesController()
-    lazy var tableViewAdapter = ClassDumpFilesTableViewAdapter(tableView: tableView, classDumpController: classDumpController)
+    @MagicViewLoading @IBOutlet var selectSourceButton: NSButton
+    @MagicViewLoading @IBOutlet var performButton: NSButton
+    @MagicViewLoading @IBOutlet var showInFinderButton: NSButton
+    @MagicViewLoading @IBOutlet var isDirectoryCheckbox: NSButton
+    @MagicViewLoading @IBOutlet var autoSelectDestinationCheckbox: NSButton
+    @MagicViewLoading @IBOutlet var sourcePathTextField: NSTextField
+    @MagicViewLoading @IBOutlet var totalProgressIndicator: NSProgressIndicator
+    @MagicViewLoading @IBOutlet var tableView: ClassDumpFilesTableView
+    
+    let filesController: ClassDumpFilesController
+    
+    lazy var tableViewAdapter = ClassDumpFilesTableViewAdapter(tableView: tableView, classDumpController: filesController)
 
+    init(filesController: ClassDumpFilesController) {
+        self.filesController = filesController
+        super.init()
+    }
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         observeClassDumpService()
         tableViewAdapter.setup()
-        classDumpController.delegate = self
+        filesController.delegate = self
     }
 
     private func observeClassDumpService() {
@@ -41,7 +49,7 @@ public class ClassDumpFilesViewController: ModuleXibViewController {
     @objc func handleClassDumpService(_ notification: Notification) {
         if let fileURL = notification.userInfo?[ClassDumpService.classDumpFileURLKey] as? URL {
             do {
-                try classDumpController.selectSourceURL(fileURL)
+                try filesController.selectSourceURL(fileURL)
             } catch {
                 NSAlert(error: error).runModal()
             }
@@ -57,18 +65,18 @@ public class ClassDumpFilesViewController: ModuleXibViewController {
         let response = openPanel.runModal()
         guard response == .OK, let url = openPanel.url else { return }
         do {
-            try classDumpController.selectSourceURL(url)
+            try filesController.selectSourceURL(url)
         } catch {
             NSAlert(error: error).runModal()
         }
     }
 
     @IBAction func performButtonAction(_ sender: NSButton) {
-        if autoSelectDestinationCheckbox.state == .on, let currentSourceURL = classDumpController.currentSourceURL {
+        if autoSelectDestinationCheckbox.state == .on, let currentSourceURL = filesController.currentSourceURL {
             // source: /A/B/Frameworks
             // destination: /A/B/FrameworksDumpHeaders
             let destinationURL = currentSourceURL.deletingLastPathComponent().appendingPathComponent("\(currentSourceURL.lastPathComponent)DumpHeaders")
-            classDumpController.perform(for: destinationURL)
+            filesController.perform(for: destinationURL)
         } else {
             let openPanel = NSOpenPanel()
             openPanel.allowedContentTypes = [.directory]
@@ -77,12 +85,12 @@ public class ClassDumpFilesViewController: ModuleXibViewController {
             openPanel.canCreateDirectories = true
             let response = openPanel.runModal()
             guard response == .OK, let url = openPanel.url else { return }
-            classDumpController.perform(for: url)
+            filesController.perform(for: url)
         }
     }
 
     @IBAction func showInFinderButtonAction(_ sender: NSButton) {
-        if let selectedSourceURL = classDumpController.currentSourceURL {
+        if let selectedSourceURL = filesController.currentSourceURL {
             FinderLauncher(url: selectedSourceURL).run()
         }
     }
@@ -95,7 +103,7 @@ extension ClassDumpFilesViewController: ClassDumpFilesControllerDelegate {
         sourcePathTextField.stringValue = url.path
         showInFinderButton.isEnabled = true
         performButton.isEnabled = true
-        isDirectoryCheckbox.state = (classDumpController.currentSourceFileWrapper?.isDirectory ?? false) ? .on : .off
+        isDirectoryCheckbox.state = (filesController.currentSourceFileWrapper?.isDirectory ?? false) ? .on : .off
         tableViewAdapter.reloadData()
     }
 
@@ -104,7 +112,7 @@ extension ClassDumpFilesViewController: ClassDumpFilesControllerDelegate {
     }
 
     public func classDumpFilesController(_ controller: ClassDumpFilesController, didCompleteDumpableFile dumpableFile: ClassDumpableFile) {
-        let progressValue = classDumpController.completedDumpableFiles.count.double / classDumpController.parsedDumpableFiles.count.double
+        let progressValue = filesController.completedDumpableFiles.count.double / filesController.parsedDumpableFiles.count.double
         totalProgressIndicator.doubleValue = progressValue
         totalProgressIndicator.stopAnimation(nil)
         tableViewAdapter.reconfigureItem(dumpableFile)
@@ -112,7 +120,7 @@ extension ClassDumpFilesViewController: ClassDumpFilesControllerDelegate {
 
     public func classDumpFilesControllerWillStartPerform(_ controller: ClassDumpFilesController) {
         totalProgressIndicator.doubleValue = 0
-        totalProgressIndicator.isIndeterminate = classDumpController.parsedDumpableFiles.count == 1
+        totalProgressIndicator.isIndeterminate = filesController.parsedDumpableFiles.count == 1
         totalProgressIndicator.startAnimation(nil)
         performButton.isEnabled = false
     }

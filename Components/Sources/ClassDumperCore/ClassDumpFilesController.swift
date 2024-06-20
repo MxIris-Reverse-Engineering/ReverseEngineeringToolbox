@@ -1,6 +1,5 @@
 import Foundation
-
-private import ClassDump
+import ClassDump
 import ExceptionCatcher
 import FrameworkToolbox
 import FoundationToolbox
@@ -38,9 +37,10 @@ public final class ClassDumpFilesController: ClassDumpFileControllerDelegate {
 
     private let group = DispatchGroup()
 
-    private let classDumpFileController = ClassDumpFileController()
+    private let classDumpFileController: ClassDumpFileController
 
-    public init() {
+    public init(configuration: CDClassDumpConfiguration) {
+        classDumpFileController = ClassDumpFileController(configuration: configuration)
         classDumpFileController.delegate = self
     }
 

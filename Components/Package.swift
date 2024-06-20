@@ -48,6 +48,7 @@ let package = Package(
         .package(url: "https://github.com/leptos-null/ClassDumpRuntime.git", branch: "master"),
         .package(url: "https://github.com/Zollerboy1/SwiftCommand", branch: "main"),
         .package(url: "https://github.com/MxIris-Library-Forks/CombineCocoa", branch: "main"),
+        .package(url: "https://github.com/dagronf/DSFToolbar", .upToNextMajor(from: "4.0.0")),
     ],
     targets: [
         .target(
@@ -80,6 +81,7 @@ let package = Package(
                 .product(name: "AdvancedCollectionTableView", package: "AdvancedCollectionTableView"),
                 .product(name: "IDEIcons", package: "ide-icons"),
                 .product(name: "MenuBuilder", package: "MenuBuilder"),
+                .product(name: "DSFToolbar", package: "DSFToolbar"),
             ],
             resources: [
                 .process("Resources"),

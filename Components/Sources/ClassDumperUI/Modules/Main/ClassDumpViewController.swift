@@ -3,18 +3,22 @@
 import AppKit
 import SnapKit
 import UIFoundation
+import DSFToolbar
+import ClassDumperCore
 
 public final class ClassDumpViewController: XiblessViewController<NSView> {
     private lazy var tabView = NSTabView()
-    
-    public private(set) lazy var filesViewController = ClassDumpFilesViewController()
+
+    public let classDumpController = ClassDumpController()
+
+    public private(set) lazy var filesViewController = ClassDumpFilesViewController(filesController: classDumpController.filesController)
 
 //    public private(set) lazy var dyldViewController = ClassDumpDyldViewController()
-    
-    public private(set) lazy var simulatorViewController = ClassDumpSimulatorViewController()
-    
-    public private(set) lazy var applicationsViewController = ClassDumpApplicationsViewController()
-    
+
+    public private(set) lazy var simulatorViewController = ClassDumpSimulatorViewController(simulatorController: classDumpController.simulatorController)
+
+    public private(set) lazy var applicationsViewController = ClassDumpApplicationsViewController(applicationsController: classDumpController.applicationsController)
+
     public override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -25,22 +29,22 @@ public final class ClassDumpViewController: XiblessViewController<NSView> {
         }
 
         tabView.tabViewType = .topTabsBezelBorder
-        
+
         let filesItem = NSTabViewItem(viewController: filesViewController).then {
             $0.label = "Files"
         }
         tabView.addTabViewItem(filesItem)
-        
+
 //        let dyldItem = NSTabViewItem(viewController: dyldViewController).then {
 //            $0.label = "Dyld"
 //        }
 //        tabView.addTabViewItem(dyldItem)
-        
+
         let simulatorItem = NSTabViewItem(viewController: simulatorViewController).then {
             $0.label = "Simulator"
         }
         tabView.addTabViewItem(simulatorItem)
-        
+
         let applicationsItem = NSTabViewItem(viewController: applicationsViewController).then {
             $0.label = "Applications"
         }
