@@ -4,7 +4,8 @@ import AppKit
 import ClassDump
 
 public class ClassDumpController {
-    public let configuration: CDClassDumpConfiguration
+    @SecureCodingDefault
+    public var configuration: CDClassDumpConfiguration
 
     public let filesController: ClassDumpFilesController
 
@@ -13,13 +14,14 @@ public class ClassDumpController {
     public let applicationsController: ClassDumpApplicationsController
 
     public init() {
-        let configuration = CDClassDumpConfiguration()
-        self.configuration = configuration
-        self.filesController = ClassDumpFilesController(configuration: configuration)
-        self.simulatorController = ClassDumpSimulatorController(configuration: configuration)
+        let configuration = SecureCodingDefault<CDClassDumpConfiguration>(key: "configuration", suite: .standard, defaultValue: .init(), classes: [NSArray.self, NSString.self])
+        self._configuration = configuration
+        self.filesController = ClassDumpFilesController(configuration: configuration.wrappedValue)
+        self.simulatorController = ClassDumpSimulatorController(configuration: configuration.wrappedValue)
         self.applicationsController = ClassDumpApplicationsController()
-        ClassDumpFileController.sharedConfiguration.apply(configuration)
+        ClassDumpFileController.sharedConfiguration.apply(configuration.wrappedValue)
     }
 }
+
 
 #endif

@@ -44,7 +44,7 @@ public final class ClassDumpFilesController: ClassDumpFileControllerDelegate {
         classDumpFileController.delegate = self
     }
 
-    public func selectSourceURL(_ url: URL) throws {
+    public func selectSourceURL(_ url: URL, searchLevel: Int = 1) throws {
         parsedDumpableFiles = []
         currentSourceURL = url
         let currentSourceFileWrapper = try FileWrapper(url: url)
@@ -52,10 +52,6 @@ public final class ClassDumpFilesController: ClassDumpFileControllerDelegate {
         if currentSourceFileWrapper.isDirectory, url.lastPathComponent.pathExtension != "framework" {
             delegate?.classDumpFilesController(self, willParseSourceURL: url)
             serialQueue.async {
-//                for childrenURL in  {
-//                    self.parseURLContent(childrenURL)
-//                }
-
                 let dumpableFiles = url.parseDumpableFileInDirectory(options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants, .skipsPackageDescendants])
                 self.parsedDumpableFiles.append(contentsOf: dumpableFiles)
                 DispatchQueue.main.async {
