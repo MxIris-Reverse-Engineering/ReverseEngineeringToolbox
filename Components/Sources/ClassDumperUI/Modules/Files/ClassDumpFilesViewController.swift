@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import SnapKit
 import SFSymbol
 import UIFoundation
 import UIFoundationToolbox
@@ -41,18 +42,14 @@ public class ClassDumpFilesViewController: ModuleXibViewController {
         tableViewAdapter.setup()
         filesController.delegate = self
     }
-
+    
     private func observeClassDumpService() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleClassDumpService(_:)), name: ClassDumpService.performClassDumpNotification, object: nil)
     }
 
     @objc func handleClassDumpService(_ notification: Notification) {
         if let fileURL = notification.userInfo?[ClassDumpService.classDumpFileURLKey] as? URL {
-            do {
-                try filesController.selectSourceURL(fileURL)
-            } catch {
-                NSAlert(error: error).runModal()
-            }
+            filesController.selectSourceURL(fileURL)
         }
     }
 
@@ -64,11 +61,7 @@ public class ClassDumpFilesViewController: ModuleXibViewController {
         openPanel.treatsFilePackagesAsDirectories = true
         let response = openPanel.runModal()
         guard response == .OK, let url = openPanel.url else { return }
-        do {
-            try filesController.selectSourceURL(url)
-        } catch {
-            NSAlert(error: error).runModal()
-        }
+        filesController.selectSourceURL(url)
     }
 
     @IBAction func performButtonAction(_ sender: NSButton) {
@@ -103,7 +96,7 @@ extension ClassDumpFilesViewController: ClassDumpFilesControllerDelegate {
         sourcePathTextField.stringValue = url.path
         showInFinderButton.isEnabled = true
         performButton.isEnabled = true
-        isDirectoryCheckbox.state = (filesController.currentSourceFileWrapper?.isDirectory ?? false) ? .on : .off
+        isDirectoryCheckbox.state = filesController.isDirectory ? .on : .off
         tableViewAdapter.reloadData()
     }
 

@@ -19,10 +19,8 @@ public final class ClassDumpFilesController: ClassDumpFileControllerDelegate {
 
     public private(set) var currentSourceURL: URL?
 
-    public private(set) var currentSourceFileWrapper: FileWrapper?
-
     public private(set) var isDirectory: Bool = false
-
+    
     @RecursiveLock
     public private(set) var parsedDumpableFiles: [ClassDumpableFile] = []
 
@@ -40,16 +38,16 @@ public final class ClassDumpFilesController: ClassDumpFileControllerDelegate {
     private let classDumpFileController: ClassDumpFileController
 
     public init(configuration: CDClassDumpConfiguration) {
-        classDumpFileController = ClassDumpFileController(configuration: configuration)
+        self.classDumpFileController = ClassDumpFileController(configuration: configuration)
         classDumpFileController.delegate = self
     }
 
-    public func selectSourceURL(_ url: URL, searchLevel: Int = 1) throws {
+    public func selectSourceURL(_ url: URL, searchLevel: Int = 1) {
+        guard let contentType = url.contentType else { return }
         parsedDumpableFiles = []
         currentSourceURL = url
-        let currentSourceFileWrapper = try FileWrapper(url: url)
-        self.currentSourceFileWrapper = currentSourceFileWrapper
-        if currentSourceFileWrapper.isDirectory, url.lastPathComponent.pathExtension != "framework" {
+        isDirectory = contentType == .folder
+        if isDirectory {
             delegate?.classDumpFilesController(self, willParseSourceURL: url)
             serialQueue.async {
                 let dumpableFiles = url.parseDumpableFileInDirectory(options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants, .skipsPackageDescendants])
@@ -109,6 +107,7 @@ func print(_ item: Any?) -> Bool {
 
 extension UTType {
     public static let dylib = UTType("com.apple.mach-o-dylib")!
+    public static let machOBinary = UTType("com.apple.mach-o-binary")!
 }
 
 extension URL {
@@ -117,29 +116,12 @@ extension URL {
     }
 
     func parseDumpableFile() -> ClassDumpableFile? {
-        guard let contentType = try? resourceValues(forKeys: [.contentTypeKey]).contentType else { return nil }
+        guard let contentType = contentType else { return nil }
         switch contentType {
         case .framework:
-            
             if let framework = Bundle(url: self), let executableURL = framework.executableURL {
                 return .init(url: self, executableURL: executableURL, type: .framework)
             }
-            
-//            for childrenURL in box.enumerator(options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants, .skipsPackageDescendants]) {
-//                if let fileWrapper = try? FileWrapper(url: childrenURL) {
-//                    if fileWrapper.isSymbolicLink, let symbolicLinkDestinationURL = fileWrapper.symbolicLinkDestinationURL {
-//                        let symbolicLinkDestinationFullURL = appendingPathComponent(symbolicLinkDestinationURL.path)
-//                        if let contentType = try? symbolicLinkDestinationFullURL.resourceValues(forKeys: [.contentTypeKey]).contentType {
-//                            if contentType == .unixExecutable {
-//                                return .init(url: self, executableURL: symbolicLinkDestinationFullURL, type: .framework)
-//                            }
-//                        }
-//                    }
-//                }
-//                if let contentType = try? childrenURL.resourceValues(forKeys: [.contentTypeKey]).contentType, contentType == .unixExecutable {
-//                    return .init(url: self, executableURL: childrenURL, type: .framework)
-//                }
-//            }
         case .unixExecutable:
             return .init(url: self, executableURL: self, type: .executable)
         case .dylib:
@@ -148,5 +130,9 @@ extension URL {
             break
         }
         return nil
+    }
+
+    var contentType: UTType? {
+        try? resourceValues(forKeys: [.contentTypeKey]).contentType
     }
 }

@@ -1,6 +1,7 @@
 import AppKit
+import UIFoundation
 
-class ClassDumpFilesTableView: NSTableView {
+class ClassDumpFilesTableView: TableView {
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         commonInit()
@@ -13,6 +14,7 @@ class ClassDumpFilesTableView: NSTableView {
 
     func commonInit() {
         style = .inset
+        headerView = NSTableHeaderView()
         tableColumns.forEach(removeTableColumn(_:))
         columnAutoresizingStyle = .uniformColumnAutoresizingStyle
         allowsColumnReordering = false
