@@ -68,7 +68,7 @@ public class ClassDumpFilesViewController: ModuleXibViewController {
         if autoSelectDestinationCheckbox.state == .on, let currentSourceURL = filesController.currentSourceURL {
             // source: /A/B/Frameworks
             // destination: /A/B/FrameworksDumpHeaders
-            let destinationURL = currentSourceURL.deletingLastPathComponent().appendingPathComponent("\(currentSourceURL.lastPathComponent)DumpHeaders")
+            let destinationURL = currentSourceURL.deletingLastPathComponent().appendingPathComponent("\(currentSourceURL.lastPathComponent)_DumpHeaders")
             filesController.perform(for: destinationURL)
         } else {
             let openPanel = NSOpenPanel()

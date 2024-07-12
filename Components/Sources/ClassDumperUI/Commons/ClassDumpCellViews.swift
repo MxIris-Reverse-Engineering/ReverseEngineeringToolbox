@@ -11,7 +11,6 @@ import UIFoundation
 import UIFoundationToolbox
 import ClassDumperCore
 import IDEIcons
-import AssociatedObject
 import FZSwiftUtils
 
 class ClassDumpNameCellView: ImageTextTableCellView {
